@@ -52,6 +52,8 @@ let size io =
 
 let box io = Curses.box io.window 0 0
 
+let vline io x y n = mvvline y x 0 n
+
 let printString io text x y = 
 	Curses.mvaddstr y x text;
 	()

@@ -18,6 +18,7 @@ val refresh : io -> unit
 val size : io -> int * int
 
 val box : io -> unit
+val vline : io -> int -> int -> int -> unit
 val printString : io -> string -> int -> int -> unit
 val printStringC : io -> string -> int -> int -> color -> color -> unit
 val printStringCenterC : io -> string -> int -> int -> color -> color -> unit
