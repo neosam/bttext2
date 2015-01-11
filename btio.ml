@@ -118,7 +118,10 @@ let size io =
 	(width, height)
 
 
-let box io = Curses.box io.window 0 0
+let box io = 
+	let color = encColorPair color_white color_black in (
+	Curses.attr_set 0 color;
+	Curses.box io.window 0 0)
 
 let vline io x y n = mvvline y x 0 n
 

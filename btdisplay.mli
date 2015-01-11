@@ -9,6 +9,7 @@ val setAuthor: display -> string -> unit
 
 
 val init: Btgame.game -> display
+val setup: display -> unit
 val quit: display -> unit
 
 val drawFrame: display -> unit

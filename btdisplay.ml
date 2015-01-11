@@ -1,6 +1,7 @@
 open Btio
 open Thread
 open Btgame
+open Btmessages
 
 
 type player_attributes = {
@@ -17,6 +18,7 @@ type display = {
 
 	msgMapSplit: int * int;
 	playerAttr: player_attributes;
+	msgs: Btmessages.messageField;
 }
 
 let getTitle display = display.title
@@ -39,7 +41,28 @@ let init game = {
 		hp = 100;
 	};
 	game = game;
+	msgs = Btmessages.newMessageField ();
 }
+
+let setup d = 
+	let msg0 = Btmessages.newMessage ()
+	and msg1 = Btmessages.newMessage ()
+	and msg2 = Btmessages.newMessage ()
+	and msg3 = Btmessages.newMessage () in
+	Btmessages.addTextToMessage msg0 "Du betrittst das Pfefferkuchenhaus." Btio.color_white Btio.color_black;
+	Btmessages.addTextToMessage msg0 "Wow!" Btio.color_white Btio.color_black;
+	Btmessages.addTextToMessage msg0 "Alles besteht aus Pfefferkuchen!!" Btio.color_white Btio.color_black;
+	Btmessages.addTextToMessage msg1 "Lalala: " Btio.color_blue Btio.color_black;
+	Btmessages.addTextToMessage msg1 "Hallo!" Btio.color_green Btio.color_black;
+	Btmessages.addTextToMessage msg2 "Hexe: " Btio.color_red Btio.color_black;
+	Btmessages.addTextToMessage msg2 "Haaallo!  Gnihihihihi!" Btio.color_green Btio.color_black;
+	Btmessages.addTextToMessage msg3 "Lalala: " Btio.color_blue Btio.color_black;
+	Btmessages.addTextToMessage msg3 "Hehe" Btio.color_green Btio.color_black;	
+	Btmessages.addMessageToField d.msgs msg0;
+	Btmessages.addMessageToField d.msgs msg1;
+	Btmessages.addMessageToField d.msgs msg2;
+	Btmessages.addMessageToField d.msgs msg3
+
 
 let quit display = Btio.stop display.io
 
@@ -77,12 +100,14 @@ let drawStatus display =
 
 let drawFrame display =
 	let io = display.io in
-	let (width, height) = Btio.size io in
+	let (width, height) = Btio.size io
+	and (splitA, splitB) = display.msgMapSplit in
 	Btio.clear io;
 	drawBasicDecoration display width height;
 	drawTitle display width;
 	drawAuthor display width height;
 	drawStatus display;
+	Btmessages.draw io display.msgs 2 5 (width * splitA / splitB - 4) (height - 7);
 	Btio.refresh io
 
 
