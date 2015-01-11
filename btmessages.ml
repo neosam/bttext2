@@ -76,6 +76,9 @@ let draw io msgField x y w h =
 	| msg :: t -> 
 		if h > 0 then 
 			let newHeight = getHeight io msg x y w (h - 1) in
-			if newHeight >= 0 then aux (drawMessage io msg x y w newHeight h) t else 0
+			if newHeight >= 0 then (
+				drawMessage io msg x y w (newHeight - 1) h;
+				aux newHeight t) 
+			else 0
 		else 0
 	in aux h msgField.messages

@@ -48,16 +48,33 @@ let setup d =
 	let msg0 = Btmessages.newMessage ()
 	and msg1 = Btmessages.newMessage ()
 	and msg2 = Btmessages.newMessage ()
-	and msg3 = Btmessages.newMessage () in
-	Btmessages.addWordsToMessage msg0 "Du betrittst das Pfefferkuchenhaus." Btio.color_white Btio.color_black;
-	Btmessages.addWordsToMessage msg0 "Wow!" Btio.color_white Btio.color_black;
-	Btmessages.addWordsToMessage msg0 "Alles besteht aus Pfefferkuchen!!" Btio.color_white Btio.color_black;
+	and msg3 = Btmessages.newMessage ()
+	and msg4 = Btmessages.newMessage () in
+	Btmessages.addWordsToMessage msg0 
+		"Du betrittst das Pfefferkuchenhaus.  Wow!  Alles besteht aus Pfefferkuchen!!  Voll lecker, man koennte fast direkt reinbeissen!" 
+		Btio.color_white Btio.color_black;
 	Btmessages.addTextToMessage msg1 "Lalala: " Btio.color_blue Btio.color_black;
 	Btmessages.addTextToMessage msg1 "Hallo!" Btio.color_green Btio.color_black;
 	Btmessages.addTextToMessage msg2 "Hexe: " Btio.color_red Btio.color_black;
-	Btmessages.addWordsToMessage msg2 "Haaallo!  Gnihihihihi!" Btio.color_green Btio.color_black;
+	Btmessages.addWordsToMessage msg2 
+	"Haaallo!  Gnihihihihi!   HOhohohoo!  Hust Hust!  Gnohohohohooho!" Btio.color_green Btio.color_black;
 	Btmessages.addTextToMessage msg3 "Lalala: " Btio.color_blue Btio.color_black;
 	Btmessages.addTextToMessage msg3 "Hehe" Btio.color_green Btio.color_black;	
+	Btmessages.addMessageToField d.msgs msg0;
+	Btmessages.addMessageToField d.msgs msg1;
+	Btmessages.addMessageToField d.msgs msg2;
+	Btmessages.addMessageToField d.msgs msg3;
+	Btmessages.addMessageToField d.msgs msg4;
+	Btmessages.addMessageToField d.msgs msg0;
+	Btmessages.addMessageToField d.msgs msg1;
+	Btmessages.addMessageToField d.msgs msg2;
+	Btmessages.addMessageToField d.msgs msg3;
+	Btmessages.addMessageToField d.msgs msg4;
+	Btmessages.addMessageToField d.msgs msg0;
+	Btmessages.addMessageToField d.msgs msg1;
+	Btmessages.addMessageToField d.msgs msg2;
+	Btmessages.addMessageToField d.msgs msg3;
+	Btmessages.addMessageToField d.msgs msg4;
 	Btmessages.addMessageToField d.msgs msg0;
 	Btmessages.addMessageToField d.msgs msg1;
 	Btmessages.addMessageToField d.msgs msg2;
