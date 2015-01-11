@@ -18,5 +18,7 @@ val refresh : io -> unit
 
 val box : io -> unit
 val printString : string -> int -> int -> unit
-val printStringColor : string -> int -> int -> color -> color -> unit
+val printStringC : string -> int -> int -> color -> color -> unit
+val printStringCenterC : string -> int -> int -> color -> color -> unit
+
 val colorPairs : unit -> int

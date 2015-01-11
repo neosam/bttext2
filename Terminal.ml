@@ -49,10 +49,13 @@ let printString text x y =
 	Curses.mvaddstr y x text;
 	()
 
-let printStringColor text x y fg bg =
+let printStringC text x y fg bg =
 	let color = encColorPair fg bg in (
 	Curses.attr_set 0 color;
 	printString text x y)
 
+let printStringCenterC text x y fg bg =
+	let x = x - String.length text / 2 in
+	printStringC text x y fg bg
 
 let colorPairs () = Curses.color_pairs ()
