@@ -43,19 +43,30 @@ let clear io = Curses.werase io.window; ()
 (* Paint the new content *)
 let refresh io = Curses.refresh (); ()
 
+(* Revert the size, 
+	to have width at first parameter and height as second *)
+let size io = 
+	let (height, width) = Curses.get_size () in
+	(width, height)
+
+
 let box io = Curses.box io.window 0 0
 
-let printString text x y = 
+let printString io text x y = 
 	Curses.mvaddstr y x text;
 	()
 
-let printStringC text x y fg bg =
+let printStringC io text x y fg bg =
 	let color = encColorPair fg bg in (
 	Curses.attr_set 0 color;
-	printString text x y)
+	printString io text x y)
 
-let printStringCenterC text x y fg bg =
+let printStringCenterC io text x y fg bg =
 	let x = x - String.length text / 2 in
-	printStringC text x y fg bg
+	printStringC io text x y fg bg
+
+let printStringRightC io text x y fg bg =
+	let x = x - String.length text in
+	printStringC io text x y fg bg
 
 let colorPairs () = Curses.color_pairs ()

@@ -1,18 +1,11 @@
-open Btio
+open Btdisplay
 open Thread
 
 let main () =
-	let io = Btio.init () in (
-	Btio.clear io;
-	Btio.box io;
-	Btio.printStringC 
-			(string_of_int (Btio.colorPairs ())) 10 3
-			Btio.color_red Btio.color_blue;
-	Btio.printString "test" 10 5;
-	Btio.printStringCenterC "test2" 10 7 Btio.color_red Btio.color_black;
-	Btio.refresh io;
+	let d = Btdisplay.init () in (
+	Btdisplay.drawFrame d;
 	Thread.delay 3.0;
-	Btio.stop io
+	Btdisplay.quit d
 	);;
 
 main ()

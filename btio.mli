@@ -15,10 +15,12 @@ val init : unit -> io
 val stop : io -> unit
 val clear : io -> unit
 val refresh : io -> unit
+val size : io -> int * int
 
 val box : io -> unit
-val printString : string -> int -> int -> unit
-val printStringC : string -> int -> int -> color -> color -> unit
-val printStringCenterC : string -> int -> int -> color -> color -> unit
+val printString : io -> string -> int -> int -> unit
+val printStringC : io -> string -> int -> int -> color -> color -> unit
+val printStringCenterC : io -> string -> int -> int -> color -> color -> unit
+val printStringRightC : io -> string -> int -> int -> color -> color -> unit
 
 val colorPairs : unit -> int
