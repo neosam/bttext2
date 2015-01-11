@@ -99,6 +99,7 @@ let key_0 = 0x30
 let init () = 
 	let window = Curses.initscr () in (
 	Curses.nodelay window true;
+	Curses.curs_set 0;
 	initColors ();
 	{window = window})
 
