@@ -1,5 +1,6 @@
 open Btio
 open List
+open Str
 
 
 type messagePart = {
@@ -26,6 +27,14 @@ let newMessage () = {parts = []}
 (* Add text in foreground and background color *)
 let addTextToMessage msg text fg bg = msg.parts <- List.append msg.parts [{
 	text = text; fg = fg; bg = bg; }]
+
+let addWordsToMessage msg text fg bg =
+	let rec aux = function
+	| [] -> ()
+	| word :: t -> (
+		addTextToMessage msg word fg bg;
+		aux t)
+	in aux (Str.split (Str.regexp " ") text)
 
 (* Create new message field *)
 let newMessageField () = {messages = []}

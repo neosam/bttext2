@@ -49,13 +49,13 @@ let setup d =
 	and msg1 = Btmessages.newMessage ()
 	and msg2 = Btmessages.newMessage ()
 	and msg3 = Btmessages.newMessage () in
-	Btmessages.addTextToMessage msg0 "Du betrittst das Pfefferkuchenhaus." Btio.color_white Btio.color_black;
-	Btmessages.addTextToMessage msg0 "Wow!" Btio.color_white Btio.color_black;
-	Btmessages.addTextToMessage msg0 "Alles besteht aus Pfefferkuchen!!" Btio.color_white Btio.color_black;
+	Btmessages.addWordsToMessage msg0 "Du betrittst das Pfefferkuchenhaus." Btio.color_white Btio.color_black;
+	Btmessages.addWordsToMessage msg0 "Wow!" Btio.color_white Btio.color_black;
+	Btmessages.addWordsToMessage msg0 "Alles besteht aus Pfefferkuchen!!" Btio.color_white Btio.color_black;
 	Btmessages.addTextToMessage msg1 "Lalala: " Btio.color_blue Btio.color_black;
 	Btmessages.addTextToMessage msg1 "Hallo!" Btio.color_green Btio.color_black;
 	Btmessages.addTextToMessage msg2 "Hexe: " Btio.color_red Btio.color_black;
-	Btmessages.addTextToMessage msg2 "Haaallo!  Gnihihihihi!" Btio.color_green Btio.color_black;
+	Btmessages.addWordsToMessage msg2 "Haaallo!  Gnihihihihi!" Btio.color_green Btio.color_black;
 	Btmessages.addTextToMessage msg3 "Lalala: " Btio.color_blue Btio.color_black;
 	Btmessages.addTextToMessage msg3 "Hehe" Btio.color_green Btio.color_black;	
 	Btmessages.addMessageToField d.msgs msg0;

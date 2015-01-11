@@ -13,6 +13,8 @@ val newMessage: unit -> message
 
 (* Add text in foreground and background color *)
 val addTextToMessage: message -> string -> Btio.color -> Btio.color -> unit
+(* Separate by space and insert each word *)
+val addWordsToMessage: message -> string -> Btio.color -> Btio.color -> unit
 
 (* Create new message field *)
 val newMessageField: unit -> messageField
