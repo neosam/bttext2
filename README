@@ -1,0 +1,55 @@
+    /\  /\   |\ |-- |\           |\        ___ |\ o      |\  |  __ |   |--
+   /  \/  \  |< |-  |/ |\/| |  | | | /\     |  |/ |  /\  | \ | /   |   |-
+  /____\___\ |/ |-- |\ |  |  \/  |/ /--\    |  |\ | /--\ |  \| \_\ \__ |-- 2
+ <-Textversion-------------The future depends on you---------------Readme->
+
+ /\\ Content:
+
+ /1\\   What is Bermuda Triangle
+
+ A game I plan to finish for about 15 years :).
+
+
+ /1.1\\  What is bttext
+
+It is the text based engine of the game which can and will also be used for
+other games.
+
+
+/1.2\\  Status
+
+The first version of the engine was written in python.  Since I don't like the
+code anymore I decided to rewrite it in Ocaml.  This version has a much clearer
+MVC architecture which has for example the opportunity to compile a web based
+version by replacing some modules.
+
+
+/1.3\\  Ingame
+
+There is no ingame yet.  The first example game will be "Story of Lalala" which
+is a stpid made up game to test the engine.
+
+
+/1.4\\  License
+
+GPLv2.  Free Software FTW!!!
+
+
+
+/2\\  Getting started
+
+/2.1\\  Compile
+
+You will need the curses bindings for ocaml to compile it.  Then you
+can run ./compile.sh and you should get a ./lalala file.
+
+
+/2.2\\  Run
+
+Run ./lalala
+
+
+/2.3\\  Controls
+
+q exits the game :)
+
