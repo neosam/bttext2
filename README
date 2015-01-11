@@ -53,3 +53,59 @@ Run ./lalala
 
 q exits the game :)
 
+
+
+/3\\  Internal structure
+
+/3.1\\  Layers
+
+In the current state, the engine has three layers:
+ * Ingame layer
+ * Interpretation
+ * IO
+
+ 
+ /3.1.1\\ Ingame layer
+
+Contains the main game logic and stores the map, persons, triggers and all
+actions.
+
+Current modules part of this layer:
+ * btgame
+
+
+/3.1.2\\  Interpretation layer
+
+Is connected to the game layer, reads data like current state and action 
+and pushes new actions like user input to it.  This data will be used and
+the IO layer will be used to display it.
+
+Current modules part of this layer:
+ * btdisplay
+ * btmessages
+ * btmap
+
+/3.1.3\\  IO Layer
+
+This layer provides input and output functionalities for the interpretation
+layer.
+ * btio
+
+/3.1.4\\  Why these layers?
+
+The current implementation for curses is done in the btio module in the
+IO layer.  What, if we want to create a web version of this game.   Then
+we simply have to replace this single module and the whole game will
+operate on a terminal simulation on the browser.
+
+But what if we don't want a simple terminal but real html elements?  Then
+we can create a html interpretation layer which observes the game will
+become a full html5 game.
+
+It can also be used to create a berrier-free version of the game.  The
+interpretation layer can also act as a socket communication.  A server
+can do the game logic and the client just visualizes it and sends the
+user input.  
+
+Anyway, it will be difficult to switch the interpretation layer since for
+example the ascii art will make no sense in graphical games.
