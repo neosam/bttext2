@@ -6,6 +6,8 @@ type io = {
 }
 
 
+type key = int
+
 (* Some color difinition *)
 type color = int
 let color_black = 0
@@ -28,9 +30,75 @@ let initColors () =
 		done 
 	done
 
+let key_a = 0x61
+let key_b = 0x62
+let key_c = 0x63
+let key_d = 0x64
+let key_e = 0x65
+let key_f = 0x66
+let key_g = 0x67
+let key_h = 0x68
+let key_i = 0x69
+let key_j = 0x6a
+let key_k = 0x6b
+let key_l = 0x6c
+let key_m = 0x6d
+let key_n = 0x6e
+let key_o = 0x6f
+let key_p = 0x70
+let key_q = 0x71
+let key_r = 0x72
+let key_s = 0x73
+let key_t = 0x74
+let key_u = 0x75
+let key_v = 0x76
+let key_w = 0x77
+let key_x = 0x78
+let key_y = 0x79
+let key_z = 0x7a
+let key_A = 0x41
+let key_B = 0x42
+let key_C = 0x43
+let key_D = 0x44
+let key_E = 0x45
+let key_F = 0x46
+let key_G = 0x47
+let key_H = 0x48
+let key_I = 0x49
+let key_J = 0x4a
+let key_K = 0x4b
+let key_L = 0x4c
+let key_M = 0x4d
+let key_N = 0x4e
+let key_O = 0x4f
+let key_P = 0x50
+let key_Q = 0x51
+let key_R = 0x52
+let key_S = 0x53
+let key_T = 0x54
+let key_U = 0x55
+let key_V = 0x56
+let key_W = 0x57
+let key_X = 0x58
+let key_Y = 0x59
+let key_Z = 0x5a
+let key_1 = 0x31
+let key_2 = 0x32
+let key_3 = 0x33
+let key_4 = 0x34
+let key_5 = 0x35
+let key_6 = 0x36
+let key_7 = 0x37
+let key_8 = 0x38
+let key_9 = 0x39
+let key_0 = 0x30
+
+
+
 (* Initialize the system *)
 let init () = 
 	let window = Curses.initscr () in (
+	Curses.nodelay window true;
 	initColors ();
 	{window = window})
 
@@ -72,3 +140,6 @@ let printStringRightC io text x y fg bg =
 	printStringC io text x y fg bg
 
 let colorPairs () = Curses.color_pairs ()
+
+
+let getKey io = Curses.getch ()

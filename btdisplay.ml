@@ -1,4 +1,6 @@
 open Btio
+open Thread
+open Btgame
 
 
 type player_attributes = {
@@ -11,6 +13,7 @@ type display = {
 	io: Btio.io;
 	mutable title: string;
 	mutable author: string;
+	game: game;
 
 	msgMapSplit: int * int;
 	playerAttr: player_attributes;
@@ -25,7 +28,7 @@ let setAuthor display author = display.author <- author
 
 
 
-let init () = {
+let init game = {
 	io = Btio.init ();
 	title = "/\\\\ Bermuda Triangle //\\";
 	author = "author";
@@ -35,6 +38,7 @@ let init () = {
 		hpMax = 100;
 		hp = 100;
 	};
+	game = game;
 }
 
 let quit display = Btio.stop display.io
@@ -80,3 +84,22 @@ let drawFrame display =
 	drawAuthor display width height;
 	drawStatus display;
 	Btio.refresh io
+
+
+let handleInput display =
+	let key = Btio.getKey display.io in
+	if key = Btio.key_q then Btgame.quit display.game
+
+
+let doFrame display =
+	handleInput display;
+	Btgame.step display.game
+
+
+let gameloop display =
+	let rec aux () = 
+		Thread.delay 0.1;
+		doFrame display;
+		drawFrame display;
+		if Btgame.isDone display.game = false then aux ()
+	in aux ()

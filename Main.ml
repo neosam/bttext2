@@ -1,11 +1,11 @@
 open Btdisplay
-open Thread
+open Btgame
+
 
 let main () =
-	let d = Btdisplay.init () in (
-	Btdisplay.drawFrame d;
-	Thread.delay 3.0;
-	Btdisplay.quit d
-	);;
+	let game = Btgame.init () in
+	let d = Btdisplay.init game in
+	Btdisplay.gameloop d;
+	Btdisplay.quit d;;
 
 main ()
