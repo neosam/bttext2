@@ -35,7 +35,21 @@ let addMessageToField msgField msg =
 	msgField.messages <- msg :: msgField.messages
 
 
-let drawMessage io msg x y w h = 
+let getHeight io msg x y w h = 
+	let rec aux i h = function
+	| [] -> h
+	| word :: t as all -> (
+		let diff = w - i
+		and wordLen = String.length word.text in
+		if wordLen < diff then (
+			(*Btio.printStringC io word.text i (y + h) word.fg word.bg;*)
+			aux (i + wordLen + 1) h t)
+		else 
+			if h > 0 then aux x (h - 1) all
+			else 0 )
+	in aux x h msg.parts;;
+
+let drawMessage io msg x y w h maxH = 
 	let rec aux i h = function
 	| [] -> h
 	| word :: t as all -> (
@@ -45,10 +59,9 @@ let drawMessage io msg x y w h =
 			Btio.printStringC io word.text i (y + h) word.fg word.bg;
 			aux (i + wordLen + 1) h t)
 		else 
-			if h > 0 then aux x (h - 1) all
+			if h < maxH then aux x (h + 1) all
 			else 0 )
 	in aux x h msg.parts;;
-
 
 
 let draw io msgField x y w h =
@@ -56,6 +69,7 @@ let draw io msgField x y w h =
 	| [] -> 0
 	| msg :: t -> 
 		if h > 0 then 
-			aux (drawMessage io msg x y w (h - 1)) t
+			let newHeight = getHeight io msg x y w (h - 1) in
+			if newHeight >= 0 then aux (drawMessage io msg x y w newHeight h) t
 		else 0
 	in aux h msgField.messages
