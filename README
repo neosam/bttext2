@@ -40,8 +40,8 @@ GPLv2.  Free Software FTW!!!
 
 /2.1\\  Compile
 
-You will need the curses bindings for ocaml to compile it.  Then you
-can run ./compile.sh and you should get a ./lalala file.
+You will need the ocaml compiler and its the curses bindings to compile it.  
+Then you can run ./compile.sh and you should get a ./lalala file.
 
 
 /2.2\\  Run
