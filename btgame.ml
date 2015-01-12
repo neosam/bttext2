@@ -1,6 +1,3 @@
-type game = {
-	mutable running: bool;
-}
 
 (* Map implementations *)
 type color = int
@@ -15,24 +12,26 @@ let color_white = 7
 
 
 
-(* The main modules *)
-let init () = {running = true}
-let quit game = game.running <- false
 
-let step game = ()
-let isDone game = not game.running
 
 
 
 (* Actor submodule *)
 module Actor = struct
-	type actor = {
+	type 'a trigger = 
+		| None of unit
+		| Func of ('a -> unit)
+
+	type 'a actor = {
 		mutable name : string;
 		mutable displayColor: color;
 		mutable mapChar : char;
 		mutable mapFg : color;
 		mutable mapBg : color;
+		mutable touchAction : 'a trigger;
 	}
+
+	type 'a actorStorage = 'a actor list
 
 	let newActor () = {
 		name = "unknown";
@@ -40,28 +39,31 @@ module Actor = struct
 		mapChar = 'X';
 		mapFg = color_white;
 		mapBg = color_black;
+		touchAction = None ();
 	}
+
+	let newActorStorage () = []
 end
 
 
 (* Define the Map submodule *)
 module Map = struct
-	type trigger = 
+	type 'a trigger = 
 		| None of unit
-		| Func of (game -> unit)
+		| Func of ('a -> unit)
 
-	type field = {
+	type 'a field = {
 		mutable ascii: char;
 		mutable fg: color;
 		mutable bg: color;
 		mutable walkable: bool;
-		mutable trigger: trigger;
+		mutable trigger: 'a trigger;
 	}
 
-	type gameMap = {
+	type 'a gameMap = {
 		width: int;
 		height: int;
-		fields: field list;
+		fields: 'a field list;
 	}
 
 
@@ -81,5 +83,24 @@ module Map = struct
 		in {width = width; height = height; fields = (createList [] size)}
 end;;
 
+
+
+type game = {
+	mutable running: bool;
+	mutable map: game Map.gameMap;
+	actorStorage: game Actor.actorStorage;
+}
+
+
+(* The main modules *)
+let init () = {
+	running = true;
+	map = Map.newMap 1 1;
+	actorStorage = Actor.newActorStorage ();
+}
+let quit game = game.running <- false
+
+let step game = ()
+let isDone game = not game.running
 
 
