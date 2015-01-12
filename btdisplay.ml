@@ -29,6 +29,15 @@ let setAuthor display author = display.author <- author
 
 
 
+let gameToIoColor x = 
+	if x = Btgame.color_black then Btio.color_black
+	else if x = Btgame.color_red then Btio.color_red
+	else if x = Btgame.color_green then Btio.color_green
+	else if x = Btgame.color_yellow then Btio.color_yellow
+	else if x = Btgame.color_blue then Btio.color_blue
+	else if x = Btgame.color_magenta then Btio.color_magenta
+	else if x = Btgame.color_cyan then Btio.color_cyan
+	else Btio.color_white
 
 let init game = {
 	io = Btio.init ();
@@ -44,41 +53,55 @@ let init game = {
 	msgs = Btmessages.newMessageField ();
 }
 
-let setup d = 
-	let msg0 = Btmessages.newMessage ()
-	and msg1 = Btmessages.newMessage ()
-	and msg2 = Btmessages.newMessage ()
-	and msg3 = Btmessages.newMessage ()
-	and msg4 = Btmessages.newMessage () in
-	Btmessages.addWordsToMessage msg0 
-		"Du betrittst das Pfefferkuchenhaus.  Wow!  Alles besteht aus Pfefferkuchen!!  Voll lecker, man koennte fast direkt reinbeissen!" 
-		Btio.color_white Btio.color_black;
-	Btmessages.addTextToMessage msg1 "Lalala: " Btio.color_blue Btio.color_black;
-	Btmessages.addTextToMessage msg1 "Hallo!" Btio.color_green Btio.color_black;
-	Btmessages.addTextToMessage msg2 "Hexe: " Btio.color_red Btio.color_black;
-	Btmessages.addWordsToMessage msg2 
-	"Haaallo!  Gnihihihihi!   HOhohohoo!  Hust Hust!  Gnohohohohooho!" Btio.color_green Btio.color_black;
-	Btmessages.addTextToMessage msg3 "Lalala: " Btio.color_blue Btio.color_black;
-	Btmessages.addTextToMessage msg3 "Hehe" Btio.color_green Btio.color_black;	
-	Btmessages.addMessageToField d.msgs msg0;
-	Btmessages.addMessageToField d.msgs msg1;
-	Btmessages.addMessageToField d.msgs msg2;
-	Btmessages.addMessageToField d.msgs msg3;
-	Btmessages.addMessageToField d.msgs msg4;
-	Btmessages.addMessageToField d.msgs msg0;
-	Btmessages.addMessageToField d.msgs msg1;
-	Btmessages.addMessageToField d.msgs msg2;
-	Btmessages.addMessageToField d.msgs msg3;
-	Btmessages.addMessageToField d.msgs msg4;
-	Btmessages.addMessageToField d.msgs msg0;
-	Btmessages.addMessageToField d.msgs msg1;
-	Btmessages.addMessageToField d.msgs msg2;
-	Btmessages.addMessageToField d.msgs msg3;
-	Btmessages.addMessageToField d.msgs msg4;
-	Btmessages.addMessageToField d.msgs msg0;
-	Btmessages.addMessageToField d.msgs msg1;
-	Btmessages.addMessageToField d.msgs msg2;
-	Btmessages.addMessageToField d.msgs msg3
+let action game =
+	(* Define some sample scenario:
+		Lalala, the choco elfin enters the gingerbreadhouse.
+		So we need the lalala and the witch actor and let them talk.
+		And then we initialize their values and finally perform the action.
+	*)
+	let lalala = Btgame.Actor.newActor ()
+	and witch = Btgame.Actor.newActor () in
+
+	(* Define the actor's attributes *)
+	Btgame.Actor.setName lalala "Lalala";
+	Btgame.Actor.setColor lalala Btgame.color_blue;
+	Btgame.Actor.setName witch "The Witch";
+	Btgame.Actor.setColor witch Btgame.color_red;
+
+	(* And action! *)
+	Btgame.action game "You are entering the tasty gingerbread house.  Wow!  It's made out of gingerbread!";
+	Btgame.say game lalala "Hello!";
+	Btgame.say game witch "Heeellooooo!   Gnihihihihi";
+	Btgame.say game lalala "Hihi";
+	Btgame.action game "Kill the witch!"
+
+
+let setup d game = 
+	(* Register callback functions *)
+	(* If somebody says something *)
+	Btgame.registerSayListener game (fun actor text ->
+		let msg = Btmessages.newMessage () in
+		Btmessages.addWordsToMessage msg 
+			((Btgame.Actor.getName actor) ^ ":")
+			(gameToIoColor (Btgame.Actor.getColor actor)) Btio.color_black;
+		Btmessages.addWordsToMessage msg text Btio.color_green Btio.color_black;
+		Btmessages.addMessageToField d.msgs msg
+	);
+
+	(* If any action happens (just text output) *)
+	Btgame.registerActionListener game (fun text ->
+		let msg = Btmessages.newMessage () in
+		Btmessages.addWordsToMessage msg text Btio.color_white Btio.color_black;
+		Btmessages.addMessageToField d.msgs msg
+	);
+
+	(* Some basic setup *)
+	setTitle d "| Story of Lalala |";
+	setAuthor d "neosam";
+
+	(* Do some action to test the engine*)
+	action game
+
 
 
 let quit display = Btio.stop display.io

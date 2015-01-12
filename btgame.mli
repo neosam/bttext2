@@ -12,8 +12,6 @@ val color_cyan : color
 val color_white : color
 
 
-
-
 (* Actor implementation *)
 module Actor : sig
 	type 'a trigger
@@ -22,6 +20,10 @@ module Actor : sig
 
 	val newActor: unit -> 'a actor
 	val newActorStorage: unit -> 'a actorStorage
+	val getName: 'a actor -> string
+	val setName: 'a actor -> string -> unit
+	val getColor: 'a actor -> color
+	val setColor: 'a actor -> color -> unit
 end
 
 (* Map implementations *)
@@ -35,6 +37,10 @@ module Map : sig
 	val newMap: int -> int -> 'a gameMap
 end
 
+(* The observer functions *)
+type 'a sayListener = ('a Actor.actor -> string -> unit)
+type actionListener = (string -> unit)
+
 (* Main type for game storage *)
 type game
 
@@ -47,3 +53,11 @@ val quit: game -> unit
 val step: game -> unit
 (* Check if game is finished *)
 val isDone: game -> bool
+
+
+val registerSayListener: game -> game sayListener -> unit
+val registerActionListener: game -> actionListener -> unit
+
+val say: game -> game Actor.actor -> string -> unit
+val action: game ->string -> unit
+

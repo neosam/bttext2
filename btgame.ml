@@ -42,6 +42,11 @@ module Actor = struct
 		touchAction = None ();
 	}
 
+	let getName actor = actor.name
+	let setName actor name = actor.name <- name
+	let getColor actor = actor.displayColor
+	let setColor actor color = actor.displayColor <- color
+
 	let newActorStorage () = []
 end
 
@@ -84,11 +89,17 @@ module Map = struct
 end;;
 
 
+(* The observer functions *)
+type 'a sayListener = ('a Actor.actor -> string -> unit)
+type actionListener = (string -> unit)
+
 
 type game = {
 	mutable running: bool;
 	mutable map: game Map.gameMap;
 	actorStorage: game Actor.actorStorage;
+	mutable sayListener: game sayListener;
+	mutable actionListener: actionListener;
 }
 
 
@@ -97,10 +108,21 @@ let init () = {
 	running = true;
 	map = Map.newMap 1 1;
 	actorStorage = Actor.newActorStorage ();
+	sayListener = (fun x y -> ());
+	actionListener = (fun x -> ());
 }
 let quit game = game.running <- false
 
 let step game = ()
 let isDone game = not game.running
+
+
+let registerSayListener game listener = game.sayListener <- listener
+let registerActionListener game listener = game.actionListener <- listener
+
+let say game actor text =
+	game.sayListener actor text
+let action game text =
+	game.actionListener text
 
 
