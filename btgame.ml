@@ -24,6 +24,26 @@ let isDone game = not game.running
 
 
 
+(* Actor submodule *)
+module Actor = struct
+	type actor = {
+		mutable name : string;
+		mutable displayColor: color;
+		mutable mapChar : char;
+		mutable mapFg : color;
+		mutable mapBg : color;
+	}
+
+	let newActor () = {
+		name = "unknown";
+		displayColor = color_white;
+		mapChar = 'X';
+		mapFg = color_white;
+		mapBg = color_black;
+	}
+end
+
+
 (* Define the Map submodule *)
 module Map = struct
 	type trigger = 

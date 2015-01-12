@@ -23,6 +23,14 @@ val step: game -> unit
 (* Check if game is finished *)
 val isDone: game -> bool
 
+
+(* Actor implementation *)
+module Actor : sig
+	type actor
+
+	val newActor: unit -> actor
+end
+
 (* Map implementations *)
 module Map : sig
 	type field
