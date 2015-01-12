@@ -34,7 +34,15 @@ module Map : sig
 	(* newMap width height
 	   create a new map with the given size.
 	   The fields are initialized with default values *)
+	val getAscii: 'a field -> char
+	val setAscii: 'a field -> char -> unit
+	val getFg: 'a field -> color
+	val setFg: 'a field -> color -> unit
+	val getBg: 'a field -> color
+	val setBg: 'a field -> color -> unit
+
 	val newMap: int -> int -> 'a gameMap
+	val fieldAt: 'a gameMap -> int -> int -> 'a field
 end
 
 (* The observer functions *)
@@ -43,6 +51,8 @@ type actionListener = (string -> unit)
 
 (* Main type for game storage *)
 type game
+
+type gameMap = game Map.gameMap
 
 (* Initialize the game *)
 val init: unit -> game
@@ -54,6 +64,8 @@ val step: game -> unit
 (* Check if game is finished *)
 val isDone: game -> bool
 
+val getMap: game -> gameMap
+val setMap: game -> gameMap -> unit
 
 val registerSayListener: game -> game sayListener -> unit
 val registerActionListener: game -> actionListener -> unit

@@ -15,3 +15,8 @@ val quit: display -> unit
 val drawFrame: display -> unit
 val doFrame: display -> unit
 val gameloop: display -> unit
+
+
+type map
+
+val drawMap: display -> int -> int -> int -> int -> unit

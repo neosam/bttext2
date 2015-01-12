@@ -126,6 +126,13 @@ let box io =
 
 let vline io x y n = mvvline y x 0 n
 
+let printChar io c x y = Curses.mvaddch y x (int_of_char c); ()
+
+let printCharC io c x y fg bg  = 
+	let color = encColorPair fg bg in (
+	Curses.attr_set 0 color;
+	printChar io c x y)
+
 let printString io text x y = 
 	Curses.mvaddstr y x text;
 	()

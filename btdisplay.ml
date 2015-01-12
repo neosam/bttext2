@@ -95,6 +95,11 @@ let setup d game =
 		Btmessages.addMessageToField d.msgs msg
 	);
 
+	Btgame.setMap game (Btgame.Map.newMap 100 100);
+	Btgame.Map.setAscii (Btgame.Map.fieldAt (Btgame.getMap game) 2 2) ' ';
+	Btgame.Map.setFg (Btgame.Map.fieldAt (Btgame.getMap game) 3 3) Btgame.color_blue;
+	Btgame.Map.setBg (Btgame.Map.fieldAt (Btgame.getMap game) 5 3) Btgame.color_blue;
+
 	(* Some basic setup *)
 	setTitle d "| Story of Lalala |";
 	setAuthor d "neosam";
@@ -106,6 +111,18 @@ let setup d game =
 
 let quit display = Btio.stop display.io
 
+
+let drawMap display x y w h =
+	let map = Btgame.getMap display.game in
+	for my = 0 to h - 1 do
+		for mx = 0 to w - 1 do
+		    let field = Btgame.Map.fieldAt map mx my in
+			Btio.printCharC display.io
+				(Btgame.Map.getAscii field) (x + mx) (y + my) 
+				(gameToIoColor (Btgame.Map.getFg field))
+				(gameToIoColor (Btgame.Map.getBg field))
+		done
+	done
 
 
 let drawBasicDecoration display width height =
@@ -148,6 +165,8 @@ let drawFrame display =
 	drawAuthor display width height;
 	drawStatus display;
 	Btmessages.draw io display.msgs 2 5 (width * splitA / splitB - 4) (height - 7);
+	drawMap display (width * splitA / splitB + 2) 5
+						(width - width * splitA / splitB - 4) (height - 7);
 	Btio.refresh io
 
 
@@ -168,3 +187,9 @@ let gameloop display =
 		drawFrame display;
 		if Btgame.isDone display.game = false then aux ()
 	in aux ()
+
+
+type map = {
+	gameMap: Btgame.game Btgame.Map.gameMap
+}
+

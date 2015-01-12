@@ -1,3 +1,4 @@
+open List
 
 (* Map implementations *)
 type color = int
@@ -73,19 +74,30 @@ module Map = struct
 
 
 	let newEmptyField () = {
-		ascii = ' ';
+		ascii = 'X';
 		fg = color_white;
 		bg = color_black;
 		walkable = true;
 		trigger = None ()
 	}
 
+	let getAscii field = field.ascii
+	let setAscii field c = field.ascii <- c
+	let getFg field = field.fg
+	let setFg field color = field.fg <- color
+	let getBg field = field.bg
+	let setBg field color = field.bg <- color
+
+	
 	let newMap width height = 
 		let size = width * height in
 		let rec createList lst = function
 		| 0 -> lst
 		| x -> createList ((newEmptyField ()) :: lst) (x - 1)
 		in {width = width; height = height; fields = (createList [] size)}
+
+	let coordinateToIndex map x y = map.width * y + x
+	let fieldAt map x y = List.nth map.fields (coordinateToIndex map x y)
 end;;
 
 
@@ -102,6 +114,8 @@ type game = {
 	mutable actionListener: actionListener;
 }
 
+type gameMap = game Map.gameMap
+
 
 (* The main modules *)
 let init () = {
@@ -115,6 +129,9 @@ let quit game = game.running <- false
 
 let step game = ()
 let isDone game = not game.running
+
+let getMap game = game.map
+let setMap game map = game.map <- map
 
 
 let registerSayListener game listener = game.sayListener <- listener
