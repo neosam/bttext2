@@ -26,6 +26,7 @@ module Actor = struct
 	type actor = {
 		mutable name : string;
 		mutable displayColor: color;
+		mutable pos : int * int;
 		mutable mapChar : char;
 		mutable mapFg : color;
 		mutable mapBg : color;
@@ -37,6 +38,7 @@ module Actor = struct
 	let newActor () = {
 		name = "unknown";
 		displayColor = color_white;
+		pos = (0, 0);
 		mapChar = 'X';
 		mapFg = color_white;
 		mapBg = color_black;
@@ -47,6 +49,14 @@ module Actor = struct
 	let setName actor name = actor.name <- name
 	let getColor actor = actor.displayColor
 	let setColor actor color = actor.displayColor <- color
+	let getPos actor = actor.pos
+	let setPos actor pos = actor.pos <- pos
+	let getAscii actor = actor.mapChar
+	let setAscii actor ascii = actor.mapChar <- ascii
+	let getFg actor = actor.mapFg
+	let setFg actor c = actor.mapFg <- c
+	let getBg actor = actor.mapBg
+	let setBg actor c = actor.mapBg <- c
 
 	let newActorStorage () = []
 end
@@ -133,7 +143,7 @@ type actionListener = (string -> unit)
 type game = {
 	mutable running: bool;
 	mutable map: Map.gameMap;
-	actorStorage: Actor.actorStorage;
+	mutable actorStorage: Actor.actorStorage;
 	mutable sayListener: sayListener;
 	mutable actionListener: actionListener;
 }
@@ -157,6 +167,9 @@ let isDone game = not game.running
 let getMap game = game.map
 let setMap game map = game.map <- map
 
+let addActor game actor = game.actorStorage <- actor :: game.actorStorage
+
+let getActorList game = game.actorStorage
 
 let registerSayListener game listener = game.sayListener <- listener
 let registerActionListener game listener = game.actionListener <- listener

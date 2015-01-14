@@ -24,6 +24,14 @@ module Actor : sig
 	val setName: actor -> string -> unit
 	val getColor: actor -> color
 	val setColor: actor -> color -> unit
+	val getPos: actor -> (int * int)
+	val setPos: actor -> (int * int) -> unit
+	val getAscii: actor -> char
+	val setAscii: actor -> char -> unit
+	val getFg: actor -> color
+	val setFg: actor -> color -> unit
+	val getBg: actor -> color
+	val setBg: actor -> color -> unit
 end
 
 (* Map implementations *)
@@ -67,6 +75,10 @@ val isDone: game -> bool
 
 val getMap: game -> gameMap
 val setMap: game -> gameMap -> unit
+
+val addActor: game -> Actor.actor -> unit
+
+val getActorList: game -> Actor.actor list
 
 val registerSayListener: game -> sayListener -> unit
 val registerActionListener: game -> actionListener -> unit

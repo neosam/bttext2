@@ -65,8 +65,16 @@ let action game =
 	(* Define the actor's attributes *)
 	Btgame.Actor.setName lalala "Lalala";
 	Btgame.Actor.setColor lalala Btgame.color_blue;
+	Btgame.Actor.setPos lalala (1, 0);
+	Btgame.Actor.setAscii lalala 'L';
+	Btgame.Actor.setBg lalala Btgame.color_blue;
 	Btgame.Actor.setName witch "The Witch";
 	Btgame.Actor.setColor witch Btgame.color_red;
+	Btgame.Actor.setPos witch (0, 1);
+	Btgame.Actor.setAscii witch 'W';
+	Btgame.Actor.setFg witch Btgame.color_red;
+	Btgame.addActor game lalala;
+	Btgame.addActor game witch;
 
 	(* And action! *)
 	Btgame.action game "You are entering the tasty gingerbread house.  Wow!  It's made out of gingerbread!";
@@ -134,6 +142,27 @@ let drawMap display x y w h =
 		done
 	done
 
+let drawActor display x y w h =
+	let actorList = Btgame.getActorList display.game in
+	let map = Btgame.getMap display.game in
+	let (focusX, focusY) = Btgame.Map.getFocus map in
+	let rec aux = function
+	| [] -> ()
+	| actor :: t -> 
+		begin
+			let (px,py) = Btgame.Actor.getPos actor in
+			let (finalX, finalY) = (px - focusX + (w / 2), py - focusY + (h / 2)) in
+			if (finalX > 0) && (finalY > 0) && (finalX <= w) && (finalY <= h) then
+				let (posX, posY) = (finalX + x, finalY + y) in
+				Btio.printCharC display.io
+					(Btgame.Actor.getAscii actor)
+					posX posY
+					(gameToIoColor (Btgame.Actor.getFg actor))
+					(gameToIoColor (Btgame.Actor.getBg actor));
+			aux t;
+		end
+	in aux actorList
+
 
 let drawBasicDecoration display width height =
 	let io = display.io 
@@ -177,7 +206,9 @@ let drawFrame display =
 	Btmessages.draw io display.msgs 2 5 (width * splitA / splitB - 4) (height - 7);
 	drawMap display (width * splitA / splitB + 2) 5
 						(width - width * splitA / splitB - 4) (height - 7);
-	Btio.refresh io
+	drawActor display (width * splitA / splitB + 2) 5
+						(width - width * splitA / splitB - 4) (height - 7);
+	Btio.refresh io 
 
 
 let handleInput display =
