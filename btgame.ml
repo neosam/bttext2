@@ -19,20 +19,20 @@ let color_white = 7
 
 (* Actor submodule *)
 module Actor = struct
-	type 'a trigger = 
+	type trigger = 
 		| None of unit
-		| Func of ('a -> unit)
+		| Id of string
 
-	type 'a actor = {
+	type actor = {
 		mutable name : string;
 		mutable displayColor: color;
 		mutable mapChar : char;
 		mutable mapFg : color;
 		mutable mapBg : color;
-		mutable touchAction : 'a trigger;
+		mutable touchAction : trigger;
 	}
 
-	type 'a actorStorage = 'a actor list
+	type actorStorage = actor list
 
 	let newActor () = {
 		name = "unknown";
@@ -54,22 +54,22 @@ end
 
 (* Define the Map submodule *)
 module Map = struct
-	type 'a trigger = 
+	type trigger = 
 		| None of unit
-		| Func of ('a -> unit)
+		| Id of string
 
-	type 'a field = {
+	type field = {
 		mutable ascii: char;
 		mutable fg: color;
 		mutable bg: color;
 		mutable walkable: bool;
-		mutable trigger: 'a trigger;
+		mutable trigger: trigger;
 	}
 
-	type 'a gameMap = {
+	type gameMap = {
 		width: int;
 		height: int;
-		fields: 'a field list;
+		fields: field list;
 	}
 
 
@@ -102,19 +102,19 @@ end;;
 
 
 (* The observer functions *)
-type 'a sayListener = ('a Actor.actor -> string -> unit)
+type sayListener = (Actor.actor -> string -> unit)
 type actionListener = (string -> unit)
 
 
 type game = {
 	mutable running: bool;
-	mutable map: game Map.gameMap;
-	actorStorage: game Actor.actorStorage;
-	mutable sayListener: game sayListener;
+	mutable map: Map.gameMap;
+	actorStorage: Actor.actorStorage;
+	mutable sayListener: sayListener;
 	mutable actionListener: actionListener;
 }
 
-type gameMap = game Map.gameMap
+type gameMap = Map.gameMap
 
 
 (* The main modules *)

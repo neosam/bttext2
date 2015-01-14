@@ -14,45 +14,45 @@ val color_white : color
 
 (* Actor implementation *)
 module Actor : sig
-	type 'a trigger
-	type 'a actor
-	type 'a actorStorage
+	type trigger
+	type actor
+	type actorStorage
 
-	val newActor: unit -> 'a actor
-	val newActorStorage: unit -> 'a actorStorage
-	val getName: 'a actor -> string
-	val setName: 'a actor -> string -> unit
-	val getColor: 'a actor -> color
-	val setColor: 'a actor -> color -> unit
+	val newActor: unit -> actor
+	val newActorStorage: unit -> actorStorage
+	val getName: actor -> string
+	val setName: actor -> string -> unit
+	val getColor: actor -> color
+	val setColor: actor -> color -> unit
 end
 
 (* Map implementations *)
 module Map : sig
-	type 'a field
-	type 'a gameMap
+	type field
+	type gameMap
 
 	(* newMap width height
 	   create a new map with the given size.
 	   The fields are initialized with default values *)
-	val getAscii: 'a field -> char
-	val setAscii: 'a field -> char -> unit
-	val getFg: 'a field -> color
-	val setFg: 'a field -> color -> unit
-	val getBg: 'a field -> color
-	val setBg: 'a field -> color -> unit
+	val getAscii: field -> char
+	val setAscii: field -> char -> unit
+	val getFg: field -> color
+	val setFg: field -> color -> unit
+	val getBg: field -> color
+	val setBg: field -> color -> unit
 
-	val newMap: int -> int -> 'a gameMap
-	val fieldAt: 'a gameMap -> int -> int -> 'a field
+	val newMap: int -> int -> gameMap
+	val fieldAt: gameMap -> int -> int -> field
 end
 
 (* The observer functions *)
-type 'a sayListener = ('a Actor.actor -> string -> unit)
+type sayListener = (Actor.actor -> string -> unit)
 type actionListener = (string -> unit)
 
 (* Main type for game storage *)
 type game
 
-type gameMap = game Map.gameMap
+type gameMap = Map.gameMap
 
 (* Initialize the game *)
 val init: unit -> game
@@ -67,9 +67,9 @@ val isDone: game -> bool
 val getMap: game -> gameMap
 val setMap: game -> gameMap -> unit
 
-val registerSayListener: game -> game sayListener -> unit
+val registerSayListener: game -> sayListener -> unit
 val registerActionListener: game -> actionListener -> unit
 
-val say: game -> game Actor.actor -> string -> unit
-val action: game ->string -> unit
+val say: game -> Actor.actor -> string -> unit
+val action: game -> string -> unit
 

@@ -190,6 +190,6 @@ let gameloop display =
 
 
 type map = {
-	gameMap: Btgame.game Btgame.Map.gameMap
+	gameMap: Btgame.gameMap
 }
 
