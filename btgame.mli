@@ -43,6 +43,7 @@ module Map : sig
 
 	val newMap: int -> int -> gameMap
 	val fieldAt: gameMap -> int -> int -> field
+	val getFocus: gameMap -> (int * int)
 end
 
 (* The observer functions *)

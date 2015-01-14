@@ -100,6 +100,13 @@ let setup d game =
 	Btgame.Map.setFg (Btgame.Map.fieldAt (Btgame.getMap game) 3 3) Btgame.color_blue;
 	Btgame.Map.setBg (Btgame.Map.fieldAt (Btgame.getMap game) 5 3) Btgame.color_blue;
 
+	for i = 0 to 10 do
+		begin
+			Btgame.Map.setAscii (Btgame.Map.fieldAt (Btgame.getMap game) i 0) ' ';
+			Btgame.Map.setAscii (Btgame.Map.fieldAt (Btgame.getMap game) 0 i) ' ';
+		end
+	done;
+
 	(* Some basic setup *)
 	setTitle d "| Story of Lalala |";
 	setAuthor d "neosam";
@@ -114,11 +121,14 @@ let quit display = Btio.stop display.io
 
 let drawMap display x y w h =
 	let map = Btgame.getMap display.game in
-	for my = 0 to h - 1 do
-		for mx = 0 to w - 1 do
+	let (focusX, focusY) = Btgame.Map.getFocus map in
+	for my_ = 0 to h - 1 do
+		for mx_ = 0 to w - 1 do
+			let mx = focusX + mx_ - (w / 2)
+			and my = focusY + my_ - (h / 2) in
 		    let field = Btgame.Map.fieldAt map mx my in
 			Btio.printCharC display.io
-				(Btgame.Map.getAscii field) (x + mx) (y + my) 
+				(Btgame.Map.getAscii field) (x + mx_) (y + my_) 
 				(gameToIoColor (Btgame.Map.getFg field))
 				(gameToIoColor (Btgame.Map.getBg field))
 		done

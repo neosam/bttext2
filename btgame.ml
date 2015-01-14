@@ -70,16 +70,24 @@ module Map = struct
 		width: int;
 		height: int;
 		fields: field list;
+
+		focus: int * int;
 	}
 
 
 	let newEmptyField () = {
-		ascii = 'X';
+		ascii = ' ';
 		fg = color_white;
 		bg = color_black;
 		walkable = true;
 		trigger = None ()
 	}
+	let newOutsideField () = 
+		let f = newEmptyField () in
+		begin
+			f.ascii <- '.';
+			f
+		end
 
 	let getAscii field = field.ascii
 	let setAscii field c = field.ascii <- c
@@ -94,10 +102,26 @@ module Map = struct
 		let rec createList lst = function
 		| 0 -> lst
 		| x -> createList ((newEmptyField ()) :: lst) (x - 1)
-		in {width = width; height = height; fields = (createList [] size)}
+		in {
+			width = width; 
+			height = height; 
+			fields = (createList [] size);
+			focus = (0, 0);
+			}
 
+	let isOutOfBounce map x y =
+		if x < 0 then true
+		else if x >= map.width then true
+		else if y < 0 then true
+		else if y >= map.height then true
+		else false
 	let coordinateToIndex map x y = map.width * y + x
-	let fieldAt map x y = List.nth map.fields (coordinateToIndex map x y)
+	let fieldAt map x y = 
+		if isOutOfBounce map x y then 
+			newOutsideField ()
+		else
+			List.nth map.fields (coordinateToIndex map x y)
+	let getFocus map = map.focus
 end;;
 
 
