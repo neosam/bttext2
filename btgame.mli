@@ -86,3 +86,8 @@ val registerActionListener: game -> actionListener -> unit
 val say: game -> Actor.actor -> string -> unit
 val action: game -> string -> unit
 
+val setPlayer: game -> Actor.actor -> unit
+val goLeft: game -> unit
+val goRight: game -> unit
+val goUp: game -> unit
+val goDown: game -> unit

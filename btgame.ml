@@ -16,7 +16,6 @@ let color_white = 7
 
 
 
-
 (* Actor submodule *)
 module Actor = struct
 	type trigger = 
@@ -146,6 +145,7 @@ type game = {
 	mutable actorStorage: Actor.actorStorage;
 	mutable sayListener: sayListener;
 	mutable actionListener: actionListener;
+	mutable player: Actor.actor;
 }
 
 type gameMap = Map.gameMap
@@ -158,6 +158,7 @@ let init () = {
 	actorStorage = Actor.newActorStorage ();
 	sayListener = (fun x y -> ());
 	actionListener = (fun x -> ());
+	player = Actor.newActor ();
 }
 let quit game = game.running <- false
 
@@ -179,4 +180,15 @@ let say game actor text =
 let action game text =
 	game.actionListener text
 
+
+let setPlayer game player = game.player <- player
+let movePlayer game (x, y) =
+	let player = game.player in
+	let (px, py) = Actor.getPos player in
+	Actor.setPos player (px + x, py + y)
+
+let goLeft game = movePlayer game (-1, 0)
+let goRight game = movePlayer game (1, 0)
+let goUp game = movePlayer game (0, -1)
+let goDown game = movePlayer game (0, 1)
 
