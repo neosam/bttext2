@@ -153,7 +153,7 @@ let drawActor display x y w h =
 		begin
 			let (px,py) = Btgame.Actor.getPos actor in
 			let (finalX, finalY) = (px - focusX + (w / 2), py - focusY + (h / 2)) in
-			if (finalX > 0) && (finalY > 0) && (finalX <= w) && (finalY <= h) then
+			if (finalX >= 0) && (finalY >= 0) && (finalX < w) && (finalY < h) then
 				let (posX, posY) = (finalX + x, finalY + y) in
 				Btio.printCharC display.io
 					(Btgame.Actor.getAscii actor)
@@ -161,6 +161,7 @@ let drawActor display x y w h =
 					(gameToIoColor (Btgame.Actor.getFg actor))
 					(gameToIoColor (Btgame.Actor.getBg actor));
 			aux t;
+			else aux t;
 		end
 	in aux actorList
 

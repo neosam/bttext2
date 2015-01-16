@@ -80,7 +80,7 @@ module Map = struct
 		height: int;
 		fields: field list;
 
-		focus: int * int;
+		mutable focus: int * int;
 	}
 
 
@@ -131,6 +131,7 @@ module Map = struct
 		else
 			List.nth map.fields (coordinateToIndex map x y)
 	let getFocus map = map.focus
+	let setFocus map focus = map.focus <- focus
 end;;
 
 
@@ -185,7 +186,11 @@ let setPlayer game player = game.player <- player
 let movePlayer game (x, y) =
 	let player = game.player in
 	let (px, py) = Actor.getPos player in
-	Actor.setPos player (px + x, py + y)
+	let finalPos = (px + x, py + y) in
+	begin
+		Actor.setPos player finalPos;
+		Map.setFocus game.map finalPos
+	end
 
 let goLeft game = movePlayer game (-1, 0)
 let goRight game = movePlayer game (1, 0)
