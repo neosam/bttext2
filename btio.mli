@@ -1,15 +1,45 @@
+(** Base type for IO.
+  * 
+  * This type is used as the interface which
+  * holds the curses window or the html data
+  * needed to perform the IO operations.
+  * @author Simon Goller <neosam@posteo.de>
+  *)
 type io
 
+
+(** IO Color Type.
+  * 
+  * @author Simon Goller <neosam@posteo.de>
+  *)
 type color
+
+(** Representation of the black color *)
 val color_black : color
+
+(** Representation of the red color *)
 val color_red : color
+
+(** Representation of the green color *)
 val color_green : color
+
+(** Representation of the yellow color *)
 val color_yellow : color
+
+(** Representation of the blue color *)
 val color_blue : color
+
+(** Representation of the magenta color *)
 val color_magenta : color
+
+(** Representation of the cyan color *)
 val color_cyan : color
+
+(** Representation of the white color *)
 val color_white : color
 
+
+(** Key representation *)
 type key
 val key_a : key
 val key_b : key
@@ -76,20 +106,61 @@ val key_0 : key
 
 
 
+(** Initialize the terminal.
+  * unit () -> io *)
 val init : unit -> io
+
+(** Shutdown terminal.
+  * stop io -> () *)
 val stop : io -> unit
+
+(** Clear the terminal.
+  * clear io -> () *)
 val clear : io -> unit
+
+(** Draw the new content to the terminal.
+  * refresh io -> () *)
 val refresh : io -> unit
+
+(** Get terminal size.
+  * size io -> (x, y) *)
 val size : io -> int * int
 
+
+(** Draw box around at the window edges.
+  * box io -> () *)
 val box : io -> unit
+
+(** Draw a vertical line.
+  * vline io x y height -> ()
+  *)
 val vline : io -> int -> int -> int -> unit
+
+(** Draw the given character on the given position.
+  * printChar io character x y -> () *)
 val printChar : io -> char -> int -> int -> unit
+
+(** Draw a colored character.
+  * printCharC io character x y foreground background -> () *)
 val printCharC : io -> char -> int -> int -> color -> color -> unit
+
+(** Print a string ot the terminal.
+  * printString io text x y -> () *)
 val printString : io -> string -> int -> int -> unit
+
+(** Print a string of the specified color.
+  * printStringC io text x y foreground background -> () *)
 val printStringC : io -> string -> int -> int -> color -> color -> unit
+
+(** Print a string of the specified color at the center of the given position.
+  * printStringCenterC io text x y foreground background -> () *)
 val printStringCenterC : io -> string -> int -> int -> color -> color -> unit
+
+(** Print a string of the specified color at the right of the given position.
+  * printStringRightC io text x y foreground background -> () *)
 val printStringRightC : io -> string -> int -> int -> color -> color -> unit
 
-val colorPairs : unit -> int
+
+(** Get the current pressed key.
+  * getKey io -> key *)
 val getKey : io -> key
