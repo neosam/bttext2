@@ -23,12 +23,12 @@ let encColorPair fg bg = bg * 8 + fg
 let decColorPair x = (x mod 8, x / 8)
 
 let initColors () =
-	Curses.start_color ();
-	for bg = 0 to 7 do 
-		for fg = 0 to 7 do
-			init_pair (encColorPair fg bg) fg bg
-		done 
-	done
+    Curses.start_color ();
+    for bg = 0 to 7 do 
+        for fg = 0 to 7 do
+            init_pair (encColorPair fg bg) fg bg
+        done 
+    done
 
 let key_a = 0x61
 let key_b = 0x62
@@ -97,11 +97,11 @@ let key_0 = 0x30
 
 (* Initialize the system *)
 let init () = 
-	let window = Curses.initscr () in (
-	Curses.nodelay window true;
-	Curses.curs_set 0;
-	initColors ();
-	{window = window})
+    let window = Curses.initscr () in (
+    Curses.nodelay window true;
+    Curses.curs_set 0;
+    initColors ();
+    {window = window})
 
 (* Stop the system *)
 let stop io = Curses.endwin ()
@@ -113,42 +113,42 @@ let clear io = Curses.werase io.window; ()
 let refresh io = Curses.refresh (); ()
 
 (* Revert the size, 
-	to have width at first parameter and height as second *)
+    to have width at first parameter and height as second *)
 let size io = 
-	let (height, width) = Curses.get_size () in
-	(width, height)
+    let (height, width) = Curses.get_size () in
+    (width, height)
 
 
 let box io = 
-	let color = encColorPair color_white color_black in (
-	Curses.attr_set 0 color;
-	Curses.box io.window 0 0)
+    let color = encColorPair color_white color_black in (
+    Curses.attr_set 0 color;
+    Curses.box io.window 0 0)
 
 let vline io x y n = mvvline y x 0 n
 
 let printChar io c x y = Curses.mvaddch y x (int_of_char c); ()
 
 let printCharC io c x y fg bg  = 
-	let color = encColorPair fg bg in (
-	Curses.attr_set 0 color;
-	printChar io c x y)
+    let color = encColorPair fg bg in (
+    Curses.attr_set 0 color;
+    printChar io c x y)
 
 let printString io text x y = 
-	Curses.mvaddstr y x text;
-	()
+    Curses.mvaddstr y x text;
+    ()
 
 let printStringC io text x y fg bg =
-	let color = encColorPair fg bg in (
-	Curses.attr_set 0 color;
-	printString io text x y)
+    let color = encColorPair fg bg in (
+    Curses.attr_set 0 color;
+    printString io text x y)
 
 let printStringCenterC io text x y fg bg =
-	let x = x - String.length text / 2 in
-	printStringC io text x y fg bg
+    let x = x - String.length text / 2 in
+    printStringC io text x y fg bg
 
 let printStringRightC io text x y fg bg =
-	let x = x - String.length text in
-	printStringC io text x y fg bg
+    let x = x - String.length text in
+    printStringC io text x y fg bg
 
 let colorPairs () = Curses.color_pairs ()
 

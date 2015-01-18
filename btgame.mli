@@ -14,44 +14,44 @@ val color_white : color
 
 (* Actor implementation *)
 module Actor : sig
-	type trigger
-	type actor
-	type actorStorage
+    type trigger
+    type actor
+    type actorStorage
 
-	val newActor: unit -> actor
-	val newActorStorage: unit -> actorStorage
-	val getName: actor -> string
-	val setName: actor -> string -> unit
-	val getColor: actor -> color
-	val setColor: actor -> color -> unit
-	val getPos: actor -> (int * int)
-	val setPos: actor -> (int * int) -> unit
-	val getAscii: actor -> char
-	val setAscii: actor -> char -> unit
-	val getFg: actor -> color
-	val setFg: actor -> color -> unit
-	val getBg: actor -> color
-	val setBg: actor -> color -> unit
+    val newActor: unit -> actor
+    val newActorStorage: unit -> actorStorage
+    val getName: actor -> string
+    val setName: actor -> string -> unit
+    val getColor: actor -> color
+    val setColor: actor -> color -> unit
+    val getPos: actor -> (int * int)
+    val setPos: actor -> (int * int) -> unit
+    val getAscii: actor -> char
+    val setAscii: actor -> char -> unit
+    val getFg: actor -> color
+    val setFg: actor -> color -> unit
+    val getBg: actor -> color
+    val setBg: actor -> color -> unit
 end
 
 (* Map implementations *)
 module Map : sig
-	type field
-	type gameMap
+    type field
+    type gameMap
 
-	(* newMap width height
-	   create a new map with the given size.
-	   The fields are initialized with default values *)
-	val getAscii: field -> char
-	val setAscii: field -> char -> unit
-	val getFg: field -> color
-	val setFg: field -> color -> unit
-	val getBg: field -> color
-	val setBg: field -> color -> unit
+    (* newMap width height
+       create a new map with the given size.
+       The fields are initialized with default values *)
+    val getAscii: field -> char
+    val setAscii: field -> char -> unit
+    val getFg: field -> color
+    val setFg: field -> color -> unit
+    val getBg: field -> color
+    val setBg: field -> color -> unit
 
-	val newMap: int -> int -> gameMap
-	val fieldAt: gameMap -> int -> int -> field
-	val getFocus: gameMap -> (int * int)
+    val newMap: int -> int -> gameMap
+    val fieldAt: gameMap -> int -> int -> field
+    val getFocus: gameMap -> (int * int)
 end
 
 (* The observer functions *)
