@@ -105,7 +105,7 @@ module Map = struct
     let getBg field = field.bg
     let setBg field color = field.bg <- color
 
-    
+
     let newMap width height = 
         let size = width * height in
         let rec createList lst = function
@@ -197,3 +197,5 @@ let goRight game = movePlayer game (1, 0)
 let goUp game = movePlayer game (0, -1)
 let goDown game = movePlayer game (0, 1)
 
+
+type trigger = (game -> unit)

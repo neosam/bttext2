@@ -91,3 +91,6 @@ val goLeft: game -> unit
 val goRight: game -> unit
 val goUp: game -> unit
 val goDown: game -> unit
+
+
+type trigger = (game -> unit)
