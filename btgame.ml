@@ -183,19 +183,41 @@ let action game text =
 
 
 let setPlayer game player = game.player <- player
-let movePlayer game (x, y) =
-    let player = game.player in
-    let (px, py) = Actor.getPos player in
+let moveActor game actor (x, y) =
+    let (px, py) = Actor.getPos actor in
     let finalPos = (px + x, py + y) in
     begin
-        Actor.setPos player finalPos;
+        Actor.setPos actor finalPos;
         Map.setFocus game.map finalPos
     end
 
-let goLeft game = movePlayer game (-1, 0)
-let goRight game = movePlayer game (1, 0)
-let goUp game = movePlayer game (0, -1)
-let goDown game = movePlayer game (0, 1)
+
+
+let collisionCheckActor game position =
+    let rec aux = function
+    | [] -> false
+    | actor :: t -> if Actor.getPos actor = position then true
+                    else aux t
+    in aux game.actorStorage
+
+let collisionCheck game position =
+    collisionCheckActor game position
+
+let tryMoveActor game actor movement =
+    let (mx, my) = movement
+    and (ax, ay) = Actor.getPos actor in
+    let position = (mx + ax, my + ay) in
+    let collision = collisionCheck game position in
+    if collision = true then false
+    else begin
+        moveActor game actor movement;
+        true
+    end
+
+let goLeft game = tryMoveActor game game.player (-1, 0)
+let goRight game = tryMoveActor game game.player (1, 0)
+let goUp game = tryMoveActor game game.player (0, -1)
+let goDown game = tryMoveActor game game.player (0, 1)
 
 
 type trigger = (game -> unit)

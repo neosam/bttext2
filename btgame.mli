@@ -87,10 +87,10 @@ val say: game -> Actor.actor -> string -> unit
 val action: game -> string -> unit
 
 val setPlayer: game -> Actor.actor -> unit
-val goLeft: game -> unit
-val goRight: game -> unit
-val goUp: game -> unit
-val goDown: game -> unit
+val goLeft: game -> bool
+val goRight: game -> bool
+val goUp: game -> bool
+val goDown: game -> bool
 
 
 type trigger = (game -> unit)
