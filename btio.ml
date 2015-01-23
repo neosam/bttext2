@@ -23,10 +23,10 @@ let encColorPair fg bg = bg * 8 + fg
 let decColorPair x = (x mod 8, x / 8)
 
 let initColors () =
-    Curses.start_color ();
+    Curses.start_color () |> ignore;
     for bg = 0 to 7 do 
         for fg = 0 to 7 do
-            init_pair (encColorPair fg bg) fg bg
+            init_pair (encColorPair fg bg) fg bg |> ignore
         done 
     done
 
@@ -98,8 +98,8 @@ let key_0 = 0x30
 (* Initialize the system *)
 let init () = 
     let window = Curses.initscr () in (
-    Curses.nodelay window true;
-    Curses.curs_set 0;
+    Curses.nodelay window true |> ignore;
+    Curses.curs_set 0 |> ignore;
     initColors ();
     {window = window})
 
@@ -110,7 +110,7 @@ let stop io = Curses.endwin ()
 let clear io = Curses.werase io.window; ()
 
 (* Paint the new content *)
-let refresh io = Curses.refresh (); ()
+let refresh io = Curses.refresh () |> ignore; ()
 
 (* Revert the size, 
     to have width at first parameter and height as second *)
@@ -126,7 +126,7 @@ let box io =
 
 let vline io x y n = mvvline y x 0 n
 
-let printChar io c x y = Curses.mvaddch y x (int_of_char c); ()
+let printChar io c x y = Curses.mvaddch y x (int_of_char c) |> ignore; ()
 
 let printCharC io c x y fg bg  = 
     let color = encColorPair fg bg in (
@@ -134,7 +134,7 @@ let printCharC io c x y fg bg  =
     printChar io c x y)
 
 let printString io text x y = 
-    Curses.mvaddstr y x text;
+    Curses.mvaddstr y x text |> ignore;
     ()
 
 let printStringC io text x y fg bg =

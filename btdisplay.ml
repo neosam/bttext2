@@ -205,7 +205,7 @@ let drawFrame display =
     drawTitle display width;
     drawAuthor display width height;
     drawStatus display;
-    Btmessages.draw io display.msgs 2 5 (width * splitA / splitB - 4) (height - 7);
+    Btmessages.draw io display.msgs 2 5 (width * splitA / splitB - 4) (height - 7) |> ignore;
     drawMap display (width * splitA / splitB + 2) 5
                         (width - width * splitA / splitB - 4) (height - 7);
     drawActor display (width * splitA / splitB + 2) 5
@@ -216,10 +216,10 @@ let drawFrame display =
 let handleInput display =
     let key = Btio.getKey display.io in
     if key = Btio.key_q then Btgame.quit display.game
-    else if key = Btio.key_h then (Btgame.goLeft display.game; ())
-    else if key = Btio.key_j then (Btgame.goDown display.game; ())
-    else if key = Btio.key_k then (Btgame.goUp display.game; ())
-    else if key = Btio.key_l then (Btgame.goRight display.game; ())
+    else if key = Btio.key_h then (Btgame.goLeft display.game |> ignore; ())
+    else if key = Btio.key_j then (Btgame.goDown display.game |> ignore; ())
+    else if key = Btio.key_k then (Btgame.goUp display.game |> ignore; ())
+    else if key = Btio.key_l then (Btgame.goRight display.game |> ignore; ())
 
 
 let doFrame display =
