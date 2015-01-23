@@ -161,28 +161,50 @@ let init () = {
     actionListener = (fun x -> ());
     player = Actor.newActor ();
 }
+(** Stops the game *)
 let quit game = game.running <- false
 
+(** One game iteration *)
 let step game = ()
+(** Returns if the game is finished or not. *)
 let isDone game = not game.running
 
+(** Get the map. *)
 let getMap game = game.map
+(** Set the map. *)
 let setMap game map = game.map <- map
 
+(** Add a new actor to the game *)
 let addActor game actor = game.actorStorage <- actor :: game.actorStorage
 
+(** Get all actors from a game *)
 let getActorList game = game.actorStorage
 
+(** Set the say listener.
+ * This will be executed if an actor says something.
+ *)
 let registerSayListener game listener = game.sayListener <- listener
+(** Set the action lsitener.
+ * This function will be execute if a custom action occured.
+ *)
 let registerActionListener game listener = game.actionListener <- listener
 
+(** Let an actor say something 
+ * This will execute the say callback.
+ *)
 let say game actor text =
     game.sayListener actor text
+(** Apply a custom game action 
+ * This will execute the action callback.
+ *)
 let action game text =
     game.actionListener text
 
 
+(** Define an actor as player *)
 let setPlayer game player = game.player <- player
+
+(** Move an actor to a specified position.*)
 let moveActor game actor (x, y) =
     let (px, py) = Actor.getPos actor in
     let finalPos = (px + x, py + y) in
@@ -192,7 +214,9 @@ let moveActor game actor (x, y) =
     end
 
 
-
+(** Check if an actor stands on a specified field.
+ * @return true if there is an actor, false if not.
+ *)
 let collisionCheckActor game position =
     let rec aux = function
     | [] -> false
@@ -200,24 +224,42 @@ let collisionCheckActor game position =
                     else aux t
     in aux game.actorStorage
 
+(** Check coordinate if it is a collision field.
+ * @return true if collision point, false if not.
+ *)
 let collisionCheck game position =
     collisionCheckActor game position
 
+(** Try to move an actor.
+ * Checks the actor for collision.
+ * It will only move the actor is it will not collide.
+ * @return true, if the actor could be moved, false if it would collide
+ *)
 let tryMoveActor game actor movement =
+    (* Extract the movement *)
     let (mx, my) = movement
+    (* Extract the actor position *)
     and (ax, ay) = Actor.getPos actor in
+    (* Calculate the final position *)
     let position = (mx + ax, my + ay) in
+    (* Check for collision *)
     let collision = collisionCheck game position in
+    (* Move the actor if possible and return if
+     * the move action was successful. *)
     if collision = true then false
     else begin
         moveActor game actor movement;
         true
     end
 
+(** Move player one field to the left *)
 let goLeft game = tryMoveActor game game.player (-1, 0)
+(** Move player one field to the right *)
 let goRight game = tryMoveActor game game.player (1, 0)
+(** Move player one field up *)
 let goUp game = tryMoveActor game game.player (0, -1)
+(** Move player one field bottom *)
 let goDown game = tryMoveActor game game.player (0, 1)
 
-
+(** Trigger type definition *)
 type trigger = (game -> unit)
