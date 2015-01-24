@@ -56,6 +56,14 @@ q exits the game :)
 
 
 /3\\  Internal structure
+/3.0\\  About the code :)
+
+Maybe you might think that the code is a bit unconsistent and breaks some
+best practices in Ocaml.  Yes, and I don't disagree.  That's because this
+project is my first Ocaml project and I started it with nearly no knowledge
+of this language.  Now you might thing I could have read some best practices
+before I start?  I absolutely agree:  I could.  But I didn't :P
+
 
 /3.1\\  Layers
 
