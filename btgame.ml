@@ -104,6 +104,8 @@ module Map = struct
     let setFg field color = field.fg <- color
     let getBg field = field.bg
     let setBg field color = field.bg <- color
+    let isWalkable field = field.walkable
+    let setWalkable field value = field.walkable <- value
 
 
     let newMap width height = 
@@ -214,6 +216,16 @@ let moveActor game actor (x, y) =
     end
 
 
+
+
+(** Check if a specific field is blocking
+ * @return true if it is blocking, false if not.
+ *)
+let collisionCheckField game position =
+    let (x, y) = position in
+    let field = Map.fieldAt game.map x y in
+    not (Map.isWalkable field)
+
 (** Check if an actor stands on a specified field.
  * @return true if there is an actor, false if not.
  *)
@@ -224,11 +236,12 @@ let collisionCheckActor game position =
                     else aux t
     in aux game.actorStorage
 
+
 (** Check coordinate if it is a collision field.
  * @return true if collision point, false if not.
  *)
 let collisionCheck game position =
-    collisionCheckActor game position
+    (collisionCheckActor game position) || (collisionCheckField game position)
 
 (** Try to move an actor.
  * Checks the actor for collision.

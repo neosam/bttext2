@@ -48,6 +48,8 @@ module Map : sig
     val setFg: field -> color -> unit
     val getBg: field -> color
     val setBg: field -> color -> unit
+    val isWalkable: field -> bool
+    val setWalkable: field -> bool -> unit
 
     val newMap: int -> int -> gameMap
     val fieldAt: gameMap -> int -> int -> field

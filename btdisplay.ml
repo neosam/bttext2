@@ -105,9 +105,11 @@ let setup d game =
     );
 
     Btgame.setMap game (Btgame.Map.newMap 100 100);
-    Btgame.Map.setAscii (Btgame.Map.fieldAt (Btgame.getMap game) 2 2) ' ';
+    Btgame.Map.setAscii (Btgame.Map.fieldAt (Btgame.getMap game) 2 2) 'G';
     Btgame.Map.setFg (Btgame.Map.fieldAt (Btgame.getMap game) 3 3) Btgame.color_blue;
     Btgame.Map.setBg (Btgame.Map.fieldAt (Btgame.getMap game) 5 3) Btgame.color_blue;
+    Btgame.Map.setWalkable (Btgame.Map.fieldAt (Btgame.getMap game) 2 2) false;
+    Btgame.Map.setWalkable (Btgame.Map.fieldAt (Btgame.getMap game) 5 3) false;
 
     for i = 0 to 10 do
         begin
