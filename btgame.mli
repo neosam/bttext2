@@ -36,6 +36,9 @@ end
 
 (* Map implementations *)
 module Map : sig
+    type trigger =
+        | None of unit
+        | MapTriggerId of string
     type field
     type gameMap
 
@@ -59,6 +62,8 @@ end
 (* The observer functions *)
 type sayListener = (Actor.actor -> string -> unit)
 type actionListener = (string -> unit)
+
+type 'a trigger = ('a -> unit)
 
 (* Main type for game storage *)
 type game
@@ -95,4 +100,3 @@ val goUp: game -> bool
 val goDown: game -> bool
 
 
-type trigger = (game -> unit)

@@ -1,4 +1,5 @@
 open List
+open Hashtbl
 
 (* Map implementations *)
 type color = int
@@ -20,7 +21,7 @@ let color_white = 7
 module Actor = struct
     type trigger = 
         | None of unit
-        | Id of string
+        | ActorTriggerId of string
 
     type actor = {
         mutable name : string;
@@ -65,7 +66,7 @@ end
 module Map = struct
     type trigger = 
         | None of unit
-        | Id of string
+        | MapTriggerId of string
 
     type field = {
         mutable ascii: char;
@@ -106,6 +107,8 @@ module Map = struct
     let setBg field color = field.bg <- color
     let isWalkable field = field.walkable
     let setWalkable field value = field.walkable <- value
+    let getTrigger field = field.trigger
+    let setTrigger field trigger = field.trigger <- trigger
 
 
     let newMap width height = 
@@ -141,6 +144,8 @@ end;;
 type sayListener = (Actor.actor -> string -> unit)
 type actionListener = (string -> unit)
 
+(** Trigger type definition *)
+type 'a trigger = ('a -> unit)
 
 type game = {
     mutable running: bool;
@@ -149,6 +154,7 @@ type game = {
     mutable sayListener: sayListener;
     mutable actionListener: actionListener;
     mutable player: Actor.actor;
+    trigger: (string, game trigger) Hashtbl.t
 }
 
 type gameMap = Map.gameMap
@@ -162,6 +168,7 @@ let init () = {
     sayListener = (fun x y -> ());
     actionListener = (fun x -> ());
     player = Actor.newActor ();
+    trigger = Hashtbl.create 1000;
 }
 (** Stops the game *)
 let quit game = game.running <- false
@@ -216,7 +223,29 @@ let moveActor game actor (x, y) =
     end
 
 
+(** Add new trigger *)
+let addTrigger game name trigger =
+    Hashtbl.add game.trigger name trigger
 
+(** Return a trigger of the given name.
+ * If there is no trigger found, an empty function
+ * will be returned. *)
+let getTrigger game name =
+    let hasTrigger = Hashtbl.mem game.trigger name in
+    if hasTrigger then Hashtbl.find game.trigger name
+    else fun x -> ()
+
+
+(** Run the trigger of the given field *)
+let runTrigger game position =
+    let (x, y) = position in
+    let field = Map.fieldAt game.map x y in
+    let mapTrigger = Map.getTrigger field in
+    match mapTrigger with
+    | None _ -> ()
+    | MapTriggerId triggerName ->
+        let trigger = getTrigger game triggerName in
+        trigger game
 
 (** Check if a specific field is blocking
  * @return true if it is blocking, false if not.
@@ -265,6 +294,18 @@ let tryMoveActor game actor movement =
         true
     end
 
+let tryMovePlayer game movement =
+    (* Extract the movement *)
+    let (mx, my) = movement
+    (* Extract the actor position *)
+    and (ax, ay) = Actor.getPos game.player in
+    (* Calculate the final position *)
+    let position = (mx + ax, my + ay) in
+    begin
+        runTrigger game position;
+        tryMoveActor game game.player movement;
+    end
+
 (** Move player one field to the left *)
 let goLeft game = tryMoveActor game game.player (-1, 0)
 (** Move player one field to the right *)
@@ -274,5 +315,4 @@ let goUp game = tryMoveActor game game.player (0, -1)
 (** Move player one field bottom *)
 let goDown game = tryMoveActor game game.player (0, 1)
 
-(** Trigger type definition *)
-type trigger = (game -> unit)
+
