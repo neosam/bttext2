@@ -1,4 +1,5 @@
 open Curses
+open Log
 
 (* Structure which holds the important data *)
 type io = {
@@ -97,6 +98,7 @@ let key_0 = 0x30
 
 (* Initialize the system *)
 let init () =
+    Log.debug "%s" "Init BTIO";
     let window = Curses.initscr () in (
     Curses.nodelay window true |> ignore;
     Curses.curs_set 0 |> ignore;
@@ -104,7 +106,7 @@ let init () =
     {window = window})
 
 (* Stop the system *)
-let stop io = Curses.endwin ()
+let stop io = Curses.endwin (); Log.debug "%s" "Stop BTIO"
 
 (* Clear the window *)
 let clear io = Curses.werase io.window; ()

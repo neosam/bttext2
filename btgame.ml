@@ -1,5 +1,6 @@
 open List
 open Hashtbl
+open Log
 
 (* Map implementations *)
 type color = int
@@ -161,17 +162,21 @@ type gameMap = Map.gameMap
 
 
 (* The main modules *)
-let init () = {
-    running = true;
-    map = Map.newMap 1 1;
-    actorStorage = Actor.newActorStorage ();
-    sayListener = (fun x y -> ());
-    actionListener = (fun x -> ());
-    player = Actor.newActor ();
-    trigger = Hashtbl.create 1000;
-}
+let init () = begin
+    Log.debug "%s" "Btgame started";
+    {
+        running = true;
+        map = Map.newMap 1 1;
+        actorStorage = Actor.newActorStorage ();
+        sayListener = (fun x y -> ());
+        actionListener = (fun x -> ());
+        player = Actor.newActor ();
+        trigger = Hashtbl.create 1000;
+    }
+end
+
 (** Stops the game *)
-let quit game = game.running <- false
+let quit game = game.running <- false; Log.debug "%s" "Btgame stopped"
 
 (** One game iteration *)
 let step game = ()
@@ -295,9 +300,10 @@ let tryMoveActor game actor movement =
     end
 
 let strFromIntInt (x, y) =
-    (string_of_int x) ^ (string_of_int y)
+    (string_of_int x) ^ " " ^ (string_of_int y)
 
 let tryMovePlayer game movement =
+    Log.debug "%s %s" "Player move event to " (strFromIntInt movement);
     (* Extract the movement *)
     let (mx, my) = movement
     (* Extract the actor position *)
@@ -311,12 +317,12 @@ let tryMovePlayer game movement =
     end
 
 (** Move player one field to the left *)
-let goLeft game = tryMoveActor game game.player (-1, 0)
+let goLeft game = tryMovePlayer game (-1, 0)
 (** Move player one field to the right *)
-let goRight game = tryMoveActor game game.player (1, 0)
+let goRight game = tryMovePlayer game (1, 0)
 (** Move player one field up *)
-let goUp game = tryMoveActor game game.player (0, -1)
+let goUp game = tryMovePlayer game (0, -1)
 (** Move player one field bottom *)
-let goDown game = tryMoveActor game game.player (0, 1)
+let goDown game = tryMovePlayer game (0, 1)
 
 
