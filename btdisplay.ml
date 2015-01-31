@@ -115,9 +115,10 @@ let setup d game =
     Btgame.Map.setBg (Btgame.Map.fieldAt (Btgame.getMap game) 5 3)
                                          Btgame.color_blue;
     Btgame.Map.setWalkable (Btgame.Map.fieldAt (Btgame.getMap game) 2 2) false;
-    let fieldTrigger game =
-        (*Btgame.action game "Trigger touched"*)
-        Btgame.goDown game |> ignore
+    let fieldTrigger game = begin
+        Btgame.action game "Trigger touched";
+        (*Btgame.goDown game |> ignore;*)
+    end
     in begin
         Btgame.addTrigger game "test1" fieldTrigger;
     end;

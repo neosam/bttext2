@@ -287,7 +287,7 @@ let tryMoveActor game actor movement =
     let (mx, my) = movement
     (* Extract the actor position *)
     and (ax, ay) = Actor.getPos actor in
-    (* Calculate the final position *)
+    (* Calculate the final positiplayer on *)
     let position = (mx + ax, my + ay) in
     (* Check for collision *)
     let collision = collisionCheck game position in
@@ -312,7 +312,6 @@ let tryMovePlayer game movement =
     let position = (mx + ax, my + ay) in
     begin
         runTrigger game position;
-        action game ("Pos: " ^ (strFromIntInt position));
         tryMoveActor game game.player movement;
     end
 
