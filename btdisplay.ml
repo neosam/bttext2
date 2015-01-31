@@ -1,6 +1,7 @@
 open Btio
 open Thread
 open Btgame
+open Btgame.Map
 open Btmessages
 
 
@@ -114,7 +115,14 @@ let setup d game =
     Btgame.Map.setBg (Btgame.Map.fieldAt (Btgame.getMap game) 5 3)
                                          Btgame.color_blue;
     Btgame.Map.setWalkable (Btgame.Map.fieldAt (Btgame.getMap game) 2 2) false;
-    Btgame.Map.setWalkable (Btgame.Map.fieldAt (Btgame.getMap game) 5 3) false;
+    let fieldTrigger game =
+        (*Btgame.action game "Trigger touched"*)
+        Btgame.goDown game |> ignore
+    in begin
+        Btgame.addTrigger game "test1" fieldTrigger;
+    end;
+    Btgame.Map.setTrigger (Btgame.Map.fieldAt (Btgame.getMap game) 5 3)
+                          (MapTriggerId "test1");
 
     for i = 0 to 10 do
         begin

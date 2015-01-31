@@ -242,8 +242,8 @@ let runTrigger game position =
     let field = Map.fieldAt game.map x y in
     let mapTrigger = Map.getTrigger field in
     match mapTrigger with
-    | None _ -> ()
-    | MapTriggerId triggerName ->
+    | Map.None _ -> ()
+    | Map.MapTriggerId triggerName ->
         let trigger = getTrigger game triggerName in
         trigger game
 
@@ -294,6 +294,9 @@ let tryMoveActor game actor movement =
         true
     end
 
+let strFromIntInt (x, y) =
+    (string_of_int x) ^ (string_of_int y)
+
 let tryMovePlayer game movement =
     (* Extract the movement *)
     let (mx, my) = movement
@@ -303,6 +306,7 @@ let tryMovePlayer game movement =
     let position = (mx + ax, my + ay) in
     begin
         runTrigger game position;
+        action game ("Pos: " ^ (strFromIntInt position));
         tryMoveActor game game.player movement;
     end
 

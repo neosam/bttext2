@@ -53,6 +53,8 @@ module Map : sig
     val setBg: field -> color -> unit
     val isWalkable: field -> bool
     val setWalkable: field -> bool -> unit
+    val getTrigger: field -> trigger
+    val setTrigger: field -> trigger -> unit
 
     val newMap: int -> int -> gameMap
     val fieldAt: gameMap -> int -> int -> field
@@ -92,6 +94,10 @@ val registerActionListener: game -> actionListener -> unit
 
 val say: game -> Actor.actor -> string -> unit
 val action: game -> string -> unit
+
+val addTrigger: game -> string -> game trigger -> unit
+val getTrigger: game -> string -> game trigger
+val runTrigger: game -> (int * int) -> unit
 
 val setPlayer: game -> Actor.actor -> unit
 val goLeft: game -> bool
