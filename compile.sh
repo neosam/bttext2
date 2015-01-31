@@ -1,7 +1,10 @@
 #!/bin/bash
 
 ocamlfind ocamlopt \
-		-o lalala -linkpkg -package curses -thread -package threads -package str \
+		-o lalala -linkpkg -package dolog \
+                           -package curses \
+                           -thread -package threads \
+                           -package str \
 		btio.mli btio.ml \
 		btgame.mli btgame.ml \
 		btmessages.mli btmessages.ml \
