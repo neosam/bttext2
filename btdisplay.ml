@@ -29,7 +29,7 @@ let setAuthor display author = display.author <- author
 
 
 
-let gameToIoColor x = 
+let gameToIoColor x =
     if x = Btgame.color_black then Btio.color_black
     else if x = Btgame.color_red then Btio.color_red
     else if x = Btgame.color_green then Btio.color_green
@@ -78,43 +78,50 @@ let action game =
     Btgame.setPlayer game lalala;
 
     (* And action! *)
-    Btgame.action game "You are entering the tasty gingerbread house.  Wow!  It's made out of gingerbread!";
+    Btgame.action game ("You are entering the tasty gingerbread house.  " ^
+                        "Wow!  It's made out of gingerbread!");
     Btgame.say game lalala "Hello!";
     Btgame.say game witch "Heeellooooo!   Gnihihihihi";
     Btgame.say game lalala "Hihi";
     Btgame.action game "Kill the witch!"
 
 
-let setup d game = 
+let setup d game =
     (* Register callback functions *)
     (* If somebody says something *)
     Btgame.registerSayListener game (fun actor text ->
         let msg = Btmessages.newMessage () in
-        Btmessages.addWordsToMessage msg 
+        Btmessages.addWordsToMessage msg
             ((Btgame.Actor.getName actor) ^ ":")
             (gameToIoColor (Btgame.Actor.getColor actor)) Btio.color_black;
-        Btmessages.addWordsToMessage msg text Btio.color_green Btio.color_black;
+        Btmessages.addWordsToMessage msg text Btio.color_green
+                                        Btio.color_black;
         Btmessages.addMessageToField d.msgs msg
     );
 
     (* If any action happens (just text output) *)
     Btgame.registerActionListener game (fun text ->
         let msg = Btmessages.newMessage () in
-        Btmessages.addWordsToMessage msg text Btio.color_white Btio.color_black;
+        Btmessages.addWordsToMessage msg text Btio.color_white
+                                              Btio.color_black;
         Btmessages.addMessageToField d.msgs msg
     );
 
     Btgame.setMap game (Btgame.Map.newMap 100 100);
     Btgame.Map.setAscii (Btgame.Map.fieldAt (Btgame.getMap game) 2 2) 'G';
-    Btgame.Map.setFg (Btgame.Map.fieldAt (Btgame.getMap game) 3 3) Btgame.color_blue;
-    Btgame.Map.setBg (Btgame.Map.fieldAt (Btgame.getMap game) 5 3) Btgame.color_blue;
+    Btgame.Map.setFg (Btgame.Map.fieldAt (Btgame.getMap game) 3 3)
+                                         Btgame.color_blue;
+    Btgame.Map.setBg (Btgame.Map.fieldAt (Btgame.getMap game) 5 3)
+                                         Btgame.color_blue;
     Btgame.Map.setWalkable (Btgame.Map.fieldAt (Btgame.getMap game) 2 2) false;
     Btgame.Map.setWalkable (Btgame.Map.fieldAt (Btgame.getMap game) 5 3) false;
 
     for i = 0 to 10 do
         begin
-            Btgame.Map.setAscii (Btgame.Map.fieldAt (Btgame.getMap game) i 0) ' ';
-            Btgame.Map.setAscii (Btgame.Map.fieldAt (Btgame.getMap game) 0 i) ' ';
+            Btgame.Map.setAscii (Btgame.Map.fieldAt
+                                    (Btgame.getMap game) i 0) ' ';
+            Btgame.Map.setAscii (Btgame.Map.fieldAt
+                                    (Btgame.getMap game) 0 i) ' ';
         end
     done;
 
@@ -139,7 +146,7 @@ let drawMap display x y w h =
             and my = focusY + my_ - (h / 2) in
             let field = Btgame.Map.fieldAt map mx my in
             Btio.printCharC display.io
-                (Btgame.Map.getAscii field) (x + mx_) (y + my_) 
+                (Btgame.Map.getAscii field) (x + mx_) (y + my_)
                 (gameToIoColor (Btgame.Map.getFg field))
                 (gameToIoColor (Btgame.Map.getBg field))
         done
@@ -151,11 +158,13 @@ let drawActor display x y w h =
     let (focusX, focusY) = Btgame.Map.getFocus map in
     let rec aux = function
     | [] -> ()
-    | actor :: t -> 
+    | actor :: t ->
         begin
             let (px,py) = Btgame.Actor.getPos actor in
-            let (finalX, finalY) = (px - focusX + (w / 2), py - focusY + (h / 2)) in
-            if (finalX >= 0) && (finalY >= 0) && (finalX < w) && (finalY < h) then
+            let (finalX, finalY) = (px - focusX + (w / 2),
+                                    py - focusY + (h / 2)) in
+            if (finalX >= 0) && (finalY >= 0) &&
+                        (finalX < w) && (finalY < h) then
                 let (posX, posY) = (finalX + x, finalY + y) in
                 Btio.printCharC display.io
                     (Btgame.Actor.getAscii actor)
@@ -169,7 +178,7 @@ let drawActor display x y w h =
 
 
 let drawBasicDecoration display width height =
-    let io = display.io 
+    let io = display.io
     and (splitA, splitB) = display.msgMapSplit in
     let mapX = width * splitA / splitB in
     Btio.box io;
@@ -178,11 +187,11 @@ let drawBasicDecoration display width height =
             Btio.color_white Btio.color_black;
     Btio.printStringC io "Map:" (mapX + 2) 4
             Btio.color_white Btio.color_black
-     
+
 
 let drawTitle display width =
-    Btio.printStringCenterC display.io 
-            display.title (width / 2) 0 
+    Btio.printStringCenterC display.io
+            display.title (width / 2) 0
             Btio.color_white Btio.color_black
 
 let drawAuthor display width height =
@@ -207,12 +216,13 @@ let drawFrame display =
     drawTitle display width;
     drawAuthor display width height;
     drawStatus display;
-    Btmessages.draw io display.msgs 2 5 (width * splitA / splitB - 4) (height - 7) |> ignore;
+    Btmessages.draw io display.msgs 2 5 (width * splitA / splitB - 4)
+                                        (height - 7) |> ignore;
     drawMap display (width * splitA / splitB + 2) 5
                         (width - width * splitA / splitB - 4) (height - 7);
     drawActor display (width * splitA / splitB + 2) 5
                         (width - width * splitA / splitB - 4) (height - 7);
-    Btio.refresh io 
+    Btio.refresh io
 
 
 let handleInput display =
@@ -230,7 +240,7 @@ let doFrame display =
 
 
 let gameloop display =
-    let rec aux () = 
+    let rec aux () =
         Thread.delay 0.1;
         doFrame display;
         drawFrame display;

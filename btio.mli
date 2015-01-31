@@ -1,5 +1,5 @@
 (** Base type for IO.
-  * 
+  *
   * This type is used as the interface which
   * holds the curses window or the html data
   * needed to perform the IO operations.
@@ -9,7 +9,7 @@ type io
 
 
 (** IO Color Type.
-  * 
+  *
   * @author Simon Goller <neosam@posteo.de>
   *)
 type color

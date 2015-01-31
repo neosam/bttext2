@@ -19,7 +19,7 @@ let color_white = 7
 
 (* Actor submodule *)
 module Actor = struct
-    type trigger = 
+    type trigger =
         | None of unit
         | ActorTriggerId of string
 
@@ -64,7 +64,7 @@ end
 
 (* Define the Map submodule *)
 module Map = struct
-    type trigger = 
+    type trigger =
         | None of unit
         | MapTriggerId of string
 
@@ -92,7 +92,7 @@ module Map = struct
         walkable = true;
         trigger = None ()
     }
-    let newOutsideField () = 
+    let newOutsideField () =
         let f = newEmptyField () in
         begin
             f.ascii <- '.';
@@ -111,14 +111,14 @@ module Map = struct
     let setTrigger field trigger = field.trigger <- trigger
 
 
-    let newMap width height = 
+    let newMap width height =
         let size = width * height in
         let rec createList lst = function
         | 0 -> lst
         | x -> createList ((newEmptyField ()) :: lst) (x - 1)
         in {
-            width = width; 
-            height = height; 
+            width = width;
+            height = height;
             fields = (createList [] size);
             focus = (0, 0);
             }
@@ -130,8 +130,8 @@ module Map = struct
         else if y >= map.height then true
         else false
     let coordinateToIndex map x y = map.width * y + x
-    let fieldAt map x y = 
-        if isOutOfBounce map x y then 
+    let fieldAt map x y =
+        if isOutOfBounce map x y then
             newOutsideField ()
         else
             List.nth map.fields (coordinateToIndex map x y)
@@ -198,12 +198,12 @@ let registerSayListener game listener = game.sayListener <- listener
  *)
 let registerActionListener game listener = game.actionListener <- listener
 
-(** Let an actor say something 
+(** Let an actor say something
  * This will execute the say callback.
  *)
 let say game actor text =
     game.sayListener actor text
-(** Apply a custom game action 
+(** Apply a custom game action
  * This will execute the action callback.
  *)
 let action game text =
