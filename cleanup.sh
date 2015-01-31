@@ -1,3 +1,3 @@
 #!/bin/bash
 
-rm *.cmo *.cmi *.o *.cmx
+rm *.cmo *.cmi *.o *.cmx logfile.txt
