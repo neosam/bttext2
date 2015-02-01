@@ -91,6 +91,8 @@ val getActorList: game -> Actor.actor list
 
 val registerSayListener: game -> sayListener -> unit
 val registerActionListener: game -> actionListener -> unit
+val addStepCallback: game -> callback -> unit
+val removeStepCallback: game -> callback -> unit
 
 val say: game -> Actor.actor -> string -> unit
 val action: game -> string -> unit

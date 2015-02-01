@@ -148,6 +148,9 @@ type actionListener = (string -> unit)
 (** Trigger type definition *)
 type 'a trigger = ('a -> unit)
 
+(** General callback definitionn *)
+type 'a callback = ('a -> unit)
+
 type game = {
     mutable running: bool;
     mutable map: Map.gameMap;
@@ -158,6 +161,7 @@ type game = {
     trigger: (string, game trigger) Hashtbl.t;
     mutable collision: bool;
     mutable runTrigger: bool;
+    mutable customSteps: game callback list;
 }
 
 type gameMap = Map.gameMap
@@ -176,6 +180,7 @@ let init () = begin
         trigger = Hashtbl.create 1000;
         collision = true;
         runTrigger = true;
+        customSteps = [];
     }
 end
 
@@ -206,6 +211,17 @@ let registerSayListener game listener = game.sayListener <- listener
  * This function will be execute if a custom action occured.
  *)
 let registerActionListener game listener = game.actionListener <- listener
+
+(** Add a step callback function
+  * It will be called on every step.
+  *)
+let addStepCallback game callback =
+    game.stepCallback <- callback::game.stepCallback
+
+(** Remove a step callback function. *)
+let removeStepCallback game callback =
+    game.stepCallback <-
+        List.filter (fun x -> x != callback) game.stepCallback
 
 (** Let an actor say something
  * This will execute the say callback.
@@ -337,6 +353,7 @@ let tryMovePlayer game movement =
             tryMoveActor game game.player movement
         else begin
             moveActor game game.player movement;
+            (* We have never a collision, so we return always true here *)
             true
         end
     end
