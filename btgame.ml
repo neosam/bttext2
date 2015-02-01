@@ -155,7 +155,9 @@ type game = {
     mutable sayListener: sayListener;
     mutable actionListener: actionListener;
     mutable player: Actor.actor;
-    trigger: (string, game trigger) Hashtbl.t
+    trigger: (string, game trigger) Hashtbl.t;
+    mutable collision: bool;
+    mutable runTrigger: bool;
 }
 
 type gameMap = Map.gameMap
@@ -172,6 +174,8 @@ let init () = begin
         actionListener = (fun x -> ());
         player = Actor.newActor ();
         trigger = Hashtbl.create 1000;
+        collision = true;
+        runTrigger = true;
     }
 end
 
@@ -299,9 +303,25 @@ let tryMoveActor game actor movement =
         true
     end
 
+(** To print debug messages from coordinates *)
 let strFromIntInt (x, y) =
     (string_of_int x) ^ " " ^ (string_of_int y)
 
+(** Returns if the player can collide or not *)
+let getCollision game = game.collision
+(** Set the collision state *)
+let setCollision game state = game.collision <- state
+
+let getRunTrigger game = game.runTrigger
+let setRunTrigger game state = game.runTrigger <- state
+
+(** Moves the player to the given direction if possible.
+ * The directionis a vector.  The engine will add the vector to the current
+ * field and check if the field is 'walkable' or if there is another actor.
+ * If the field is good tto go, the player will placed on the field and
+ * the function will return true.  If the players position will not be touched
+ * and it will return false.
+ * If collision is disabled, there will not be any collision check. *)
 let tryMovePlayer game movement =
     Log.debug "%s %s" "Player move event to " (strFromIntInt movement);
     (* Extract the movement *)
@@ -311,8 +331,14 @@ let tryMovePlayer game movement =
     (* Calculate the final position *)
     let position = (mx + ax, my + ay) in
     begin
-        runTrigger game position;
-        tryMoveActor game game.player movement;
+        if (getRunTrigger game) then
+            runTrigger game position;
+        if (getCollision game) then
+            tryMoveActor game game.player movement
+        else begin
+            moveActor game game.player movement;
+            true
+        end
     end
 
 (** Move player one field to the left *)
@@ -323,5 +349,3 @@ let goRight game = tryMovePlayer game (1, 0)
 let goUp game = tryMovePlayer game (0, -1)
 (** Move player one field bottom *)
 let goDown game = tryMovePlayer game (0, 1)
-
-

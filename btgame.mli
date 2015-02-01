@@ -99,6 +99,11 @@ val addTrigger: game -> string -> game trigger -> unit
 val getTrigger: game -> string -> game trigger
 val runTrigger: game -> (int * int) -> unit
 
+val getCollision: game -> bool
+val setCollision: game -> bool -> unit
+val getRunTrigger: game -> bool
+val setRunTrigger: game -> bool -> unit
+
 val setPlayer: game -> Actor.actor -> unit
 val goLeft: game -> bool
 val goRight: game -> bool
