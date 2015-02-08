@@ -1,5 +1,6 @@
 open Btdisplay
 open Btgame
+open Lalala
 open Log
 
 let initLog () = begin
@@ -13,9 +14,7 @@ let main () = begin
     Log.info "%s" "Starting";
     let game = Btgame.init () in
     let d = Btdisplay.init game in
-    Btgame.setCollision game false;
-    Btgame.setRunTrigger game false;
-    Btdisplay.setup d game;
+    Lalala.setup d game;
     Btdisplay.gameloop d;
     Btdisplay.quit d;
     Log.info "%s" "Finish";

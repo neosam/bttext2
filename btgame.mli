@@ -66,6 +66,7 @@ type sayListener = (Actor.actor -> string -> unit)
 type actionListener = (string -> unit)
 
 type 'a trigger = ('a -> unit)
+type 'a callback = ('a => unit)
 
 (* Main type for game storage *)
 type game
@@ -91,8 +92,8 @@ val getActorList: game -> Actor.actor list
 
 val registerSayListener: game -> sayListener -> unit
 val registerActionListener: game -> actionListener -> unit
-val addStepCallback: game -> callback -> unit
-val removeStepCallback: game -> callback -> unit
+val addStepCallback: game -> game callback -> unit
+val removeStepCallback: game -> game callback -> unit
 
 val say: game -> Actor.actor -> string -> unit
 val action: game -> string -> unit
