@@ -1,4 +1,6 @@
 open Btgame
+open Btio
+open Btmessages
 
 type display
 
@@ -7,9 +9,12 @@ val setTitle: display -> string -> unit
 val getAuthor: display -> string
 val setAuthor: display -> string -> unit
 
+val getMessageField: display -> Btmessages.messageField
+
+val gameToIoColor: Btgame.color -> Btio.color
 
 val init: Btgame.game -> display
-val setup: display -> game -> unit
+(*val setup: display -> game -> unit*)
 val quit: display -> unit
 
 val drawFrame: display -> unit

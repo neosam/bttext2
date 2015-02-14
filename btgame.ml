@@ -161,7 +161,7 @@ type game = {
     trigger: (string, game trigger) Hashtbl.t;
     mutable collision: bool;
     mutable runTrigger: bool;
-    mutable customSteps: game callback list;
+    mutable stepCallback: game callback list;
 }
 
 type gameMap = Map.gameMap
@@ -180,7 +180,7 @@ let init () = begin
         trigger = Hashtbl.create 1000;
         collision = true;
         runTrigger = true;
-        customSteps = [];
+        stepCallback = [];
     }
 end
 

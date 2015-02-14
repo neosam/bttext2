@@ -9,4 +9,14 @@ ocamlfind ocamlopt \
 		btgame.mli btgame.ml \
 		btmessages.mli btmessages.ml \
 		btdisplay.mli btdisplay.ml \
-		Main.ml
+		lalala.ml Main.ml
+ocamlfind ocamlopt \
+		-o editor -linkpkg -package dolog \
+                           -package curses \
+                           -thread -package threads \
+                           -package str \
+		btio.mli btio.ml \
+		btgame.mli btgame.ml \
+		btmessages.mli btmessages.ml \
+		btdisplay.mli btdisplay.ml \
+		editor.ml

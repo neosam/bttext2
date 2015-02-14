@@ -66,7 +66,7 @@ type sayListener = (Actor.actor -> string -> unit)
 type actionListener = (string -> unit)
 
 type 'a trigger = ('a -> unit)
-type 'a callback = ('a => unit)
+type 'a callback = ('a -> unit)
 
 (* Main type for game storage *)
 type game

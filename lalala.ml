@@ -39,13 +39,16 @@ let setup d game =
     (* Register callback functions *)
     (* If somebody says something *)
     Btgame.registerSayListener game (fun actor text ->
-        let msg = Btmessages.newMessage () in
-        Btmessages.addWordsToMessage msg
-            ((Btgame.Actor.getName actor) ^ ":")
-            (gameToIoColor (Btgame.Actor.getColor actor)) Btio.color_black;
-        Btmessages.addWordsToMessage msg text Btio.color_green
-                                        Btio.color_black;
-        Btmessages.addMessageToField d.msgs msg
+            let msg = Btmessages.newMessage () in begin
+            Btmessages.addWordsToMessage msg
+                ((Btgame.Actor.getName actor) ^ ":")
+                (Btdisplay.gameToIoColor (Btgame.Actor.getColor actor)) 
+                                            Btio.color_black;
+            Btmessages.addWordsToMessage msg text Btio.color_green
+                                            Btio.color_black;
+            Btmessages.addMessageToField 
+                (Btdisplay.getMessageField d) msg;
+        end
     );
 
     (* If any action happens (just text output) *)
@@ -53,7 +56,8 @@ let setup d game =
         let msg = Btmessages.newMessage () in
         Btmessages.addWordsToMessage msg text Btio.color_white
                                               Btio.color_black;
-        Btmessages.addMessageToField d.msgs msg
+        Btmessages.addMessageToField 
+            (Btdisplay.getMessageField d) msg;
     );
 
     Btgame.setMap game (Btgame.Map.newMap 100 100);
@@ -89,7 +93,7 @@ let setup d game =
     (* Do some action to test the engine*)
     action game
 
-let setup display =
+(*let setup display =
     (* setup code here *)
-    ()
+    ()*)
 

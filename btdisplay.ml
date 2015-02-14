@@ -28,6 +28,8 @@ let setTitle display title = display.title <- title
 let getAuthor display = display.author
 let setAuthor display author = display.author <- author
 
+let getMessageField display = display.msgs
+
 
 
 let gameToIoColor x =
