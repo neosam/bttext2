@@ -132,33 +132,33 @@ val size : io -> int * int
 val box : io -> unit
 
 (** Draw a vertical line.
-  * vline io x y height -> ()
+  * vline io (x y) height -> ()
   *)
-val vline : io -> int -> int -> int -> unit
+val vline : io -> int * int -> int -> unit
 
 (** Draw the given character on the given position.
-  * printChar io character x y -> () *)
-val printChar : io -> char -> int -> int -> unit
+  * printChar io character (x, y) -> () *)
+val printChar : io -> char -> int * int -> unit
 
 (** Draw a colored character.
-  * printCharC io character x y foreground background -> () *)
-val printCharC : io -> char -> int -> int -> color -> color -> unit
+  * printCharC io character (x, y) (foreground, background) -> () *)
+val printCharC : io -> char -> int * int -> color * color -> unit
 
 (** Print a string ot the terminal.
-  * printString io text x y -> () *)
-val printString : io -> string -> int -> int -> unit
+  * printString io text (x, y) -> () *)
+val printString : io -> string -> int * int -> unit
 
 (** Print a string of the specified color.
-  * printStringC io text x y foreground background -> () *)
-val printStringC : io -> string -> int -> int -> color -> color -> unit
+  * printStringC io text (x, y) (foreground, background) -> () *)
+val printStringC : io -> string -> int * int -> color * color -> unit
 
 (** Print a string of the specified color at the center of the given position.
-  * printStringCenterC io text x y foreground background -> () *)
-val printStringCenterC : io -> string -> int -> int -> color -> color -> unit
+  * printStringCenterC io text (x, y) (foreground, background) -> () *)
+val printStringCenterC : io -> string -> int * int -> color * color -> unit
 
 (** Print a string of the specified color at the right of the given position.
-  * printStringRightC io text x y foreground background -> () *)
-val printStringRightC : io -> string -> int -> int -> color -> color -> unit
+  * printStringRightC io text (x, y) (foreground, background) -> () *)
+val printStringRightC : io -> string -> int * int -> color * color -> unit
 
 
 (** Get the current pressed key.

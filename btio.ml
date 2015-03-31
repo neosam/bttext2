@@ -20,7 +20,7 @@ let color_magenta = 5
 let color_cyan = 6
 let color_white = 7
 
-let encColorPair fg bg = bg * 8 + fg
+let encColorPair (fg, bg) = bg * 8 + fg
 let decColorPair x = (x mod 8, x / 8)
 
 let initColors () =
@@ -126,20 +126,20 @@ let box io =
     Curses.attr_set 0 color;
     Curses.box io.window 0 0)
 
-let vline io x y n = mvvline y x 0 n
+let vline io (x, y) n = mvvline y x 0 n
 
-let printChar io c x y = Curses.mvaddch y x (int_of_char c) |> ignore; ()
+let printChar io c (x, y) = Curses.mvaddch y x (int_of_char c) |> ignore; ()
 
-let printCharC io c x y fg bg  =
-    let color = encColorPair fg bg in (
+let printCharC io c pos color_pair  =
+    let color = encColorPair color_pair in (
     Curses.attr_set 0 color;
-    printChar io c x y)
+    printChar io c pos)
 
-let printString io text x y =
+let printString io text (x, y) =
     Curses.mvaddstr y x text |> ignore;
     ()
 
-let printStringC io text x y fg bg =
+let printStringC io text (x, y) (fg, bg) =
     let color = encColorPair fg bg in (
     Curses.attr_set 0 color;
     printString io text x y)
