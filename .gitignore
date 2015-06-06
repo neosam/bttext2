@@ -9,3 +9,5 @@ editorlog.txt
 *.swp
 .vagrant
 test
+btiotest
+btrendertest
