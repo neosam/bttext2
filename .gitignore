@@ -6,3 +6,6 @@ logfile.txt
 editor
 editorlog.txt
 
+*.swp
+.vagrant
+test
