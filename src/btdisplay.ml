@@ -7,9 +7,16 @@ type field = Stringfield of string * string
 type btrender = Btrender.btrender
 
 type btdisplay = {
+    (** We should be able to render somehting *)
     render: Btrender.btrender;
+
+    (** Which title to display *)
     title: string;
+
+    (** Which chapter to display *)
     chapter: string;
+
+    (** Additional fields for the status bar *)
     fields: field list
 }
 
