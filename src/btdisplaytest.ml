@@ -10,6 +10,7 @@ let main () =
     Btdisplay.init (Some render) |>
     Btdisplay.set_title "| Test |" |>
     Btdisplay.set_chapter "| Chapter |" |>
+    Btdisplay.set_text_map_ratio (1, 2) |>
     render_frame |>
     wait_for_escape render |>
     Btdisplay.quit;;

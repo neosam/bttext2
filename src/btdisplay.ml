@@ -123,12 +123,41 @@ let render_chapter (fg, width, height) (display: btdisplay): btdisplay =
                                                            height - 1))
         display
 
+let render_status_bar (fg, width, height) (display: btdisplay): btdisplay =
+    render_packer (fun (render: btrender) -> render |>
+        Btrender.print_string (Some fg) "Status:" (2, 1)
+    ) display
 
-let render_frame display =
-    let defaults = get_render_defaults display in
+let calculate_separator_column width display =
+    let (num, denom) = display.text_map_ratio in
+    width * num / denom
+
+let render_text_and_map_decoration defaults display =
+    let (fg, overall_width, overall_height) = defaults in
+    let separator_column = calculate_separator_column overall_width display
+    and start_height = display.status_size + 2 in
+    let area_height = overall_height - start_height - 1 in
+    render_packer (fun (render: btrender) -> render |>
+        Btrender.print_string (Some fg) "Text:" (2, start_height) |>
+        Btrender.print_string (Some fg) "Map:" (separator_column + 2,
+                                                    start_height) |>
+        Btrender.vline area_height (separator_column, start_height)
+    ) display
+
+
+let render_outer_decoration defaults display =
     display |>
     render_outer_box defaults |>
     render_title defaults |>
     render_chapter defaults
 
+let render_content defaults display =
+    display |>
+    render_status_bar defaults |>
+    render_text_and_map_decoration defaults
 
+let render_frame display =
+    let defaults = get_render_defaults display in
+    display |>
+    render_outer_decoration defaults |>
+    render_content defaults
