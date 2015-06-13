@@ -25,4 +25,11 @@ val get_title: btdisplay -> string
 val set_chapter: string -> btdisplay -> btdisplay
 val get_chapter: btdisplay -> string
 
+val set_status_size: int -> btdisplay -> btdisplay
+val get_status_size: btdisplay -> int
+
+val set_text_map_ratio: int * int -> btdisplay -> btdisplay
+val get_text_map_ratio: btdisplay -> int * int
+
+
 val render_frame: btdisplay -> btdisplay

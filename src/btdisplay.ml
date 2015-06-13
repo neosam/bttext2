@@ -17,8 +17,28 @@ type btdisplay = {
     chapter: string;
 
     (** Additional fields for the status bar *)
-    fields: field list
+    fields: field list;
+
+    (** Size of the status field *)
+    status_size: int;
+
+    (** Ratio between text field and map: (num/denom) *)
+    text_map_ratio: int * int
 }
+
+(** Pack btrender methods in btdisplay methods
+ * First parameter is the render function where only btrender is left
+ * Second parameter is the display variable. *)
+let render_packer (render_fn: btrender -> btrender)
+                                (display: btdisplay): btdisplay = {
+    render = render_fn display.render;
+    title = display.title;
+    chapter = display.chapter;
+    fields = display.fields;
+    status_size = display.status_size;
+    text_map_ratio = display.text_map_ratio
+}
+
 
 let init render_option =
     let render = match render_option with
@@ -27,12 +47,13 @@ let init render_option =
     { render = render;
       title = "";
       chapter = "";
-      fields = []
+      fields = [];
+      status_size = 1;
+      text_map_ratio = (3, 4)
     }
 
 let quit display =
-    Btrender.quit display.render;
-    display
+    render_packer Btrender.quit display
 
 let add_string_field fieldName value display = display
 let add_int_field fieldName value display = display
@@ -45,7 +66,9 @@ let set_title title display = {
     render = display.render;
     title = title;
     chapter = display.chapter;
-    fields = display.fields
+    fields = display.fields;
+    status_size = display.status_size;
+    text_map_ratio = display.text_map_ratio
 }
 let get_title display = display.title
 
@@ -53,7 +76,9 @@ let set_chapter chapter display = {
     render = display.render;
     title = display.title;
     chapter = chapter;
-    fields = display.fields
+    fields = display.fields;
+    status_size = display.status_size;
+    text_map_ratio = display.text_map_ratio
 }
 let get_chapter display = display.chapter
 
@@ -63,18 +88,28 @@ let get_render_defaults display =
     and (width, height) = Btrender.size display.render in
     (default_foreground, width, height)
 
-
-
-(** Pack btrender methods in btdisplay methods
- * First parameter is the render function where only btrender is left
- * Second parameter is the display variable. *)
-let render_packer (render_fn: btrender -> btrender)
-                                (display: btdisplay): btdisplay = {
-    render = render_fn display.render;
+let set_status_size status_size display = {
+    render = display.render;
     title = display.title;
     chapter = display.chapter;
-    fields = display.fields
+    fields = display.fields;
+    status_size = status_size;
+    text_map_ratio = display.text_map_ratio
 }
+let get_status_size display = display.status_size
+
+let set_text_map_ratio text_map_ratio display = {
+    render = display.render;
+    title = display.title;
+    chapter = display.chapter;
+    fields = display.fields;
+    status_size = display.status_size;
+    text_map_ratio = text_map_ratio
+}
+let get_text_map_ratio display = display.text_map_ratio
+
+
+
 
 let render_outer_box (_, _, _) (display: btdisplay): btdisplay =
     render_packer Btrender.box display
