@@ -7,7 +7,7 @@
 type io
 
 type color
-type color_pair
+type color_pair = color * color
 
 type key
 

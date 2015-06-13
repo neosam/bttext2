@@ -8,17 +8,21 @@ BTIO_TEST_EXE=btiotest
 BTIO_TEST_DEP=build/btio.cmx build/btiotest.cmx
 BTRENDER_TEST_EXE=btrendertest
 BTRENDER_TEST_DEP=build/btio.cmx build/btrender.cmx build/btrendertest.cmx
+BTDISPLAY_TEST_EXE=btdisplaytest
+BTDISPLAY_TEST_DEP=build/btio.cmx build/btrender.cmx build/btdisplay.cmx build/btdisplaytest.cmx
 
-all: ${BTIO_TEST_EXE} ${BTRENDER_TEST_EXE}
+all: ${BTIO_TEST_EXE} ${BTRENDER_TEST_EXE} ${BTDISPLAY_TEST_EXE}
 
 clean:
 	rm build/*
-	rm ${BTIO_TEST_EXE} ${BTRENDER_TEST_EXE}
+	rm ${BTIO_TEST_EXE} ${BTRENDER_TEST_EXE} ${BTDISPLAY_TEST_EXE}
 
 ${BTIO_TEST_EXE}: ${BTIO_TEST_DEP}
 	${OCAMLFIND} ${OCAMLOPT} -linkpkg -I build/ ${PACKAGE_CURSES} ${BTIO_TEST_DEP} -o ${BTIO_TEST_EXE}
 ${BTRENDER_TEST_EXE}: ${BTRENDER_TEST_DEP}
 	${OCAMLFIND} ${OCAMLOPT} -linkpkg -I build/ ${PACKAGE_CURSES} ${BTRENDER_TEST_DEP} -o ${BTRENDER_TEST_EXE}
+${BTDISPLAY_TEST_EXE}: ${BTDISPLAY_TEST_DEP}
+	${OCAMLFIND} ${OCAMLOPT} -linkpkg -I build/ ${PACKAGE_CURSES} ${BTDISPLAY_TEST_DEP} -o ${BTDISPLAY_TEST_EXE}
 
 build/btio.cmi: src/btio.mli
 	${OCAMLFIND} ${OCAMLOPT} -c -I build/ src/btio.mli -o build/btio.cmi
@@ -37,3 +41,12 @@ build/btrender.cmx: src/btrender.ml build/btrender.cmi
 
 build/btrendertest.cmx: src/btrendertest.ml
 	${OCAMLFIND} ${OCAMLOPT} -c -I build/ src/btrendertest.ml -o build/btrendertest.cmx
+
+build/btdisplay.cmi: src/btdisplay.mli
+	${OCAMLFIND} ${OCAMLOPT} -c -I build/ src/btdisplay.mli -o build/btdisplay.cmi
+
+build/btdisplay.cmx: src/btdisplay.ml build/btdisplay.cmi
+	${OCAMLFIND} ${OCAMLOPT} -c -I build/ ${PACKAGE_CURSES} src/btdisplay.ml -o build/btdisplay.cmx
+
+build/btdisplaytest.cmx: src/btdisplaytest.ml
+	${OCAMLFIND} ${OCAMLOPT} -c -I build/ src/btdisplaytest.ml -o build/btdisplaytest.cmx

@@ -54,3 +54,5 @@ let print_string_center color_pair_opt str pos render =
 let print_string_right color_pair_opt str pos render =
     render |>
     call_io_packing (Btio.print_string_right color_pair_opt str pos)
+
+let get_key render = Btio.get_key render.io

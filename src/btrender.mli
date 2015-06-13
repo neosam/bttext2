@@ -50,3 +50,5 @@ val print_string_center: Btio.color_pair option -> string -> int * int ->
 (* Print recht oriented string *)
 val print_string_right: Btio.color_pair option -> string -> int * int ->
                     btrender -> btrender
+
+val get_key: btrender -> Btio.key

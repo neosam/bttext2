@@ -5,9 +5,11 @@ lalala
 logfile.txt
 editor
 editorlog.txt
-
-*.swp
+.*.swp
+.*.swo
+src/.*.swp
 .vagrant
 test
 btiotest
 btrendertest
+btdisplaytest
