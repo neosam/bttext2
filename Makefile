@@ -2,14 +2,14 @@ OCAMLFIND=ocamlfind
 OCAMLC=ocamlc
 OCAMLOPT=ocamlopt
 
-PACKAGE_CURSES=-package curses
+PACKAGE_CURSES=-package curses -package str
 
 BTIO_TEST_EXE=btiotest
 BTIO_TEST_DEP=build/btio.cmx build/btiotest.cmx
 BTRENDER_TEST_EXE=btrendertest
 BTRENDER_TEST_DEP=build/btio.cmx build/btrender.cmx build/btrendertest.cmx
 BTDISPLAY_TEST_EXE=btdisplaytest
-BTDISPLAY_TEST_DEP=build/btio.cmx build/btrender.cmx build/btdisplay.cmx build/btdisplaytest.cmx
+BTDISPLAY_TEST_DEP=build/btio.cmx build/btrender.cmx build/btdisplay.cmx build/btdisplaytest.cmx build/bttextfield.cmx
 
 all: ${BTIO_TEST_EXE} ${BTRENDER_TEST_EXE} ${BTDISPLAY_TEST_EXE}
 
@@ -47,6 +47,12 @@ build/btdisplay.cmi: src/btdisplay.mli
 
 build/btdisplay.cmx: src/btdisplay.ml build/btdisplay.cmi
 	${OCAMLFIND} ${OCAMLOPT} -c -I build/ ${PACKAGE_CURSES} src/btdisplay.ml -o build/btdisplay.cmx
+
+build/bttextfield.cmi: src/bttextfield.mli
+	${OCAMLFIND} ${OCAMLOPT} -c -I build/ src/bttextfield.mli -o build/bttextfield.cmi
+
+build/bttextfield.cmx: src/bttextfield.ml build/bttextfield.cmi
+	${OCAMLFIND} ${OCAMLOPT} -c -I build/ ${PACKAGE_CURSES} src/bttextfield.ml -o build/bttextfield.cmx
 
 build/btdisplaytest.cmx: src/btdisplaytest.ml
 	${OCAMLFIND} ${OCAMLOPT} -c -I build/ src/btdisplaytest.ml -o build/btdisplaytest.cmx
