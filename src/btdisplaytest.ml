@@ -11,6 +11,8 @@ let main () =
     Btdisplay.set_title "| Test |" |>
     Btdisplay.set_chapter "| Chapter |" |>
     Btdisplay.set_text_map_ratio (1, 2) |>
+    Btdisplay.add_field ("Mana", "100/100") |>
+    Btdisplay.add_field ("Health", "100/100") |>
     render_frame |>
     wait_for_escape render |>
     Btdisplay.quit;;

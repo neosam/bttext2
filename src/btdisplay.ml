@@ -1,8 +1,7 @@
 open Btrender
 open Btio
 
-type field = Stringfield of string * string
-           | Intfield of string * int
+type field = string * string
 
 type btrender = Btrender.btrender
 
@@ -55,10 +54,32 @@ let init render_option =
 let quit display =
     render_packer Btrender.quit display
 
-let add_string_field fieldName value display = display
-let add_int_field fieldName value display = display
-let set_string_field fieldName value display = display
-let set_int_field fieldName value display = display
+let replace_field_list (fields: field list)
+                        (display: btdisplay): btdisplay = {
+    render = display.render;
+    title = display.title;
+    chapter = display.chapter;
+    fields = fields;
+    status_size = display.status_size;
+    text_map_ratio = display.text_map_ratio
+    }
+
+let add_field field display =
+    replace_field_list (List.append display.fields [field]) display
+
+let replace_field_value field field_name value =
+    let (current_field_name, _) = field in
+    if field_name = current_field_name then (field_name, value)
+    else field
+let replace_field_value_in_list field_name value fields =
+    let rec aux acc = function
+    | [] -> acc
+    | a :: t -> aux (replace_field_value a field_name value :: acc) t in
+    aux [] fields
+let set_field field_name value display =
+    replace_field_list (replace_field_value_in_list field_name
+                            value display.fields) display
+
 
 let clear_fields display = display
 
@@ -123,10 +144,28 @@ let render_chapter (fg, width, height) (display: btdisplay): btdisplay =
                                                            height - 1))
         display
 
+let draw_single_field (fg, _, _) field x y display: int * btdisplay =
+    let (field_name, field_value) = field in
+    let string_to_print = field_name ^ ": " ^ field_value in
+    let length = String.length string_to_print in
+    let new_x = x + length + 2 in
+    (new_x, render_packer
+        (Btrender.print_string (Some fg) string_to_print (x, y)) display)
+
+let draw_fields defaults start_x y display =
+    let rec aux current_x display_acc = function
+        | [] -> display_acc
+        | field :: t ->
+                let (next_x, new_display) =
+                    draw_single_field defaults field current_x y display in
+                aux next_x new_display t in
+    aux start_x display display.fields
 let render_status_bar (fg, width, height) (display: btdisplay): btdisplay =
+    display |>
     render_packer (fun (render: btrender) -> render |>
-        Btrender.print_string (Some fg) "Status:" (2, 1)
-    ) display
+        Btrender.print_string (Some fg) "Status" (2, 1)
+    ) |>
+    draw_fields (fg, width, height) 10 1
 
 let calculate_separator_column width display =
     let (num, denom) = display.text_map_ratio in
