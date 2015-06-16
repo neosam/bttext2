@@ -28,3 +28,6 @@ val get_text_map_ratio: btdisplay -> int * int
 
 
 val render_frame: btdisplay -> btdisplay
+
+
+val add_message: Btio.color_pair -> string -> btdisplay -> btdisplay

@@ -9,7 +9,7 @@ BTIO_TEST_DEP=build/btio.cmx build/btiotest.cmx
 BTRENDER_TEST_EXE=btrendertest
 BTRENDER_TEST_DEP=build/btio.cmx build/btrender.cmx build/btrendertest.cmx
 BTDISPLAY_TEST_EXE=btdisplaytest
-BTDISPLAY_TEST_DEP=build/btio.cmx build/btrender.cmx build/btdisplay.cmx build/btdisplaytest.cmx build/bttextfield.cmx
+BTDISPLAY_TEST_DEP=build/btio.cmx build/btrender.cmx build/bttextfield.cmx build/btdisplay.cmx build/btdisplaytest.cmx
 
 all: ${BTIO_TEST_EXE} ${BTRENDER_TEST_EXE} ${BTDISPLAY_TEST_EXE}
 
@@ -45,7 +45,7 @@ build/btrendertest.cmx: src/btrendertest.ml
 build/btdisplay.cmi: src/btdisplay.mli
 	${OCAMLFIND} ${OCAMLOPT} -c -I build/ src/btdisplay.mli -o build/btdisplay.cmi
 
-build/btdisplay.cmx: src/btdisplay.ml build/btdisplay.cmi
+build/btdisplay.cmx: src/btdisplay.ml build/btdisplay.cmi build/bttextfield.cmx
 	${OCAMLFIND} ${OCAMLOPT} -c -I build/ ${PACKAGE_CURSES} src/btdisplay.ml -o build/btdisplay.cmx
 
 build/bttextfield.cmi: src/bttextfield.mli

@@ -1,5 +1,6 @@
 open Btrender
 open Btio
+open Bttextfield
 
 type field = string * string
 
@@ -22,8 +23,17 @@ type btdisplay = {
     status_size: int;
 
     (** Ratio between text field and map: (num/denom) *)
-    text_map_ratio: int * int
+    text_map_ratio: int * int;
+
+    (** Text field *)
+    textfield: Bttextfield.bttextfield
 }
+
+let calculate_separator_column_relative width (num, denom) =
+    width * num / denom
+
+let calculate_separator_column width display =
+    calculate_separator_column_relative width display.text_map_ratio
 
 (** Pack btrender methods in btdisplay methods
  * First parameter is the render function where only btrender is left
@@ -35,11 +45,19 @@ let render_packer (render_fn: btrender -> btrender)
     chapter = display.chapter;
     fields = display.fields;
     status_size = display.status_size;
-    text_map_ratio = display.text_map_ratio
+    text_map_ratio = display.text_map_ratio;
+    textfield = display.textfield
 }
 
+let init_textfield render relation =
+    let (width, height) = Btrender.size render in
+    let separator = calculate_separator_column_relative width relation in
+    let pos = (2, 5)
+    and size = (separator - 3, height - 7) in
+    Bttextfield.create pos size render
 
 let init render_option =
+    let relation = (3, 4) in
     let render = match render_option with
     | None -> Btrender.init ()
     | Some render -> render in
@@ -48,7 +66,8 @@ let init render_option =
       chapter = "";
       fields = [];
       status_size = 1;
-      text_map_ratio = (3, 4)
+      text_map_ratio = relation;
+      textfield = init_textfield render relation
     }
 
 let quit display =
@@ -61,7 +80,8 @@ let replace_field_list (fields: field list)
     chapter = display.chapter;
     fields = fields;
     status_size = display.status_size;
-    text_map_ratio = display.text_map_ratio
+    text_map_ratio = display.text_map_ratio;
+    textfield = display.textfield
     }
 
 let add_field field display =
@@ -89,7 +109,8 @@ let set_title title display = {
     chapter = display.chapter;
     fields = display.fields;
     status_size = display.status_size;
-    text_map_ratio = display.text_map_ratio
+    text_map_ratio = display.text_map_ratio;
+    textfield = display.textfield
 }
 let get_title display = display.title
 
@@ -99,7 +120,8 @@ let set_chapter chapter display = {
     chapter = chapter;
     fields = display.fields;
     status_size = display.status_size;
-    text_map_ratio = display.text_map_ratio
+    text_map_ratio = display.text_map_ratio;
+    textfield = display.textfield
 }
 let get_chapter display = display.chapter
 
@@ -115,7 +137,8 @@ let set_status_size status_size display = {
     chapter = display.chapter;
     fields = display.fields;
     status_size = status_size;
-    text_map_ratio = display.text_map_ratio
+    text_map_ratio = display.text_map_ratio;
+    textfield = display.textfield
 }
 let get_status_size display = display.status_size
 
@@ -125,9 +148,20 @@ let set_text_map_ratio text_map_ratio display = {
     chapter = display.chapter;
     fields = display.fields;
     status_size = display.status_size;
-    text_map_ratio = text_map_ratio
+    text_map_ratio = text_map_ratio;
+    textfield = display.textfield
 }
 let get_text_map_ratio display = display.text_map_ratio
+
+let set_textfield textfield display = {
+    render = display.render;
+    title = display.title;
+    chapter = display.chapter;
+    fields = display.fields;
+    status_size = display.status_size;
+    text_map_ratio = display.text_map_ratio;
+    textfield = textfield
+}
 
 
 
@@ -167,9 +201,6 @@ let render_status_bar (fg, width, height) (display: btdisplay): btdisplay =
     ) |>
     draw_fields (fg, width, height) 10 1
 
-let calculate_separator_column width display =
-    let (num, denom) = display.text_map_ratio in
-    width * num / denom
 
 let render_text_and_map_decoration defaults display =
     let (fg, overall_width, overall_height) = defaults in
@@ -195,8 +226,16 @@ let render_content defaults display =
     render_status_bar defaults |>
     render_text_and_map_decoration defaults
 
+let textfield_hull textfield_fn display =
+    set_textfield (textfield_fn display.textfield) display
+
 let render_frame display =
     let defaults = get_render_defaults display in
     display |>
     render_outer_decoration defaults |>
-    render_content defaults
+    render_content defaults |>
+    textfield_hull Bttextfield.render
+
+
+let add_message color text display =
+    textfield_hull (Bttextfield.add_string color text) display

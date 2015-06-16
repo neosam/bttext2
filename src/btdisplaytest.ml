@@ -1,3 +1,4 @@
+open Btio
 open Btdisplay
 
 let rec wait_for_escape render display =
@@ -13,6 +14,7 @@ let main () =
     Btdisplay.set_text_map_ratio (1, 2) |>
     Btdisplay.add_field ("Mana", "100/100") |>
     Btdisplay.add_field ("Health", "100/100") |>
+    Btdisplay.add_message (Btio.color_red, Btio.color_black) "Hello World" |>
     render_frame |>
     wait_for_escape render |>
     Btdisplay.quit;;
