@@ -22,19 +22,15 @@ let create pos size render = {
 }
 
 let resize size textfield = {
-    render = textfield.render;
-    pos = textfield.pos;
+    textfield with
     size = size;
-    lines = textfield.lines
 }
 
 let get_btrender textfield = textfield.render
 
 let set_render render textfield: bttextfield = {
+    textfield with
     render = render;
-    pos = textfield.pos;
-    size = textfield.size;
-    lines = textfield.lines
 }
 
 
@@ -45,9 +41,7 @@ let textblock_size (_, text) = String.length text
 
 (* --- Lowlevel functions *)
 let set_lines (lines: line list) textfield: bttextfield = {
-    render = textfield.render;
-    pos = textfield.pos;
-    size = textfield.size;
+    textfield with
     lines = lines
 }
 let get_last_line textfield: line = match textfield.lines with

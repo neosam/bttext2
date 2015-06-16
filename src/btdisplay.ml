@@ -40,13 +40,8 @@ let calculate_separator_column width display =
  * Second parameter is the display variable. *)
 let render_packer (render_fn: btrender -> btrender)
                                 (display: btdisplay): btdisplay = {
+    display with
     render = render_fn display.render;
-    title = display.title;
-    chapter = display.chapter;
-    fields = display.fields;
-    status_size = display.status_size;
-    text_map_ratio = display.text_map_ratio;
-    textfield = display.textfield
 }
 
 let init_textfield render relation =
@@ -75,13 +70,8 @@ let quit display =
 
 let replace_field_list (fields: field list)
                         (display: btdisplay): btdisplay = {
-    render = display.render;
-    title = display.title;
-    chapter = display.chapter;
+    display with
     fields = fields;
-    status_size = display.status_size;
-    text_map_ratio = display.text_map_ratio;
-    textfield = display.textfield
     }
 
 let add_field field display =
@@ -104,24 +94,14 @@ let set_field field_name value display =
 let clear_fields display = display
 
 let set_title title display = {
-    render = display.render;
+    display with
     title = title;
-    chapter = display.chapter;
-    fields = display.fields;
-    status_size = display.status_size;
-    text_map_ratio = display.text_map_ratio;
-    textfield = display.textfield
 }
 let get_title display = display.title
 
 let set_chapter chapter display = {
-    render = display.render;
-    title = display.title;
+    display with
     chapter = chapter;
-    fields = display.fields;
-    status_size = display.status_size;
-    text_map_ratio = display.text_map_ratio;
-    textfield = display.textfield
 }
 let get_chapter display = display.chapter
 
@@ -132,34 +112,19 @@ let get_render_defaults display =
     (default_foreground, width, height)
 
 let set_status_size status_size display = {
-    render = display.render;
-    title = display.title;
-    chapter = display.chapter;
-    fields = display.fields;
+    display with
     status_size = status_size;
-    text_map_ratio = display.text_map_ratio;
-    textfield = display.textfield
 }
 let get_status_size display = display.status_size
 
 let set_text_map_ratio text_map_ratio display = {
-    render = display.render;
-    title = display.title;
-    chapter = display.chapter;
-    fields = display.fields;
-    status_size = display.status_size;
+    display with
     text_map_ratio = text_map_ratio;
-    textfield = display.textfield
 }
 let get_text_map_ratio display = display.text_map_ratio
 
 let set_textfield textfield display = {
-    render = display.render;
-    title = display.title;
-    chapter = display.chapter;
-    fields = display.fields;
-    status_size = display.status_size;
-    text_map_ratio = display.text_map_ratio;
+    display with
     textfield = textfield
 }
 
