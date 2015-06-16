@@ -138,4 +138,5 @@ let do_render start_top start_bottom (textfield: bttextfield) =
 let render textfield =
     let (x, y) = textfield.pos
     and (width, height) = textfield.size in
-    do_render y (y + height) textfield
+    let internal_height = min (List.length textfield.lines) height in
+    do_render y (y + internal_height) textfield
