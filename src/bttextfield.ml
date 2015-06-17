@@ -123,9 +123,9 @@ let do_render start_top start_bottom (textfield: bttextfield) =
         | [] -> textfield_acc
         | line :: t ->
                 if i > height then textfield_acc
-                else 
+                else
                     let new_textfield = render_line line
-                                        (x, start_bottom - i) textfield in
+                                        (x, start_bottom - i - 1) textfield in
                     aux (i + 1) new_textfield t in
     aux 0 textfield textfield.lines
 
@@ -133,4 +133,4 @@ let render textfield =
     let (x, y) = textfield.pos
     and (width, height) = textfield.size in
     let internal_height = min (List.length textfield.lines) height in
-    do_render y (y + internal_height) textfield
+    do_render y (y + height - 1) textfield

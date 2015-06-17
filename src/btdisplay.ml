@@ -47,7 +47,7 @@ let render_packer (render_fn: btrender -> btrender)
 let init_textfield render relation =
     let (width, height) = Btrender.size render in
     let separator = calculate_separator_column_relative width relation in
-    let pos = (2, 5)
+    let pos = (2, 6)
     and size = (separator - 3, height - 7) in
     Bttextfield.create pos size render
 
@@ -203,4 +203,7 @@ let render_frame display =
 
 
 let add_message color text display =
-    textfield_hull (Bttextfield.add_string color text) display
+    textfield_hull (fun textfield -> textfield |>
+        Bttextfield.add_string color text |>
+        Bttextfield.add_newline
+    ) display
