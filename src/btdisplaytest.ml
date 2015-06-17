@@ -10,12 +10,13 @@ let add_text text display =
     let color = (Btio.color_red, Btio.color_black) in
     Btdisplay.add_message color text display
 
-let flood_messages display =
+let flood_messages count display =
     let rec aux display_aux = function
         | 0 -> display_aux
         | i -> let new_display = add_text (string_of_int i) display_aux in
                 aux new_display (i - 1) in
-    aux display 20
+    aux display count |>
+    Btdisplay.add_message_newline (Btio.color_black, Btio.color_black) ""
 
 let main () =
     let render = Btrender.init () in
@@ -25,7 +26,8 @@ let main () =
     Btdisplay.set_text_map_ratio (1, 2) |>
     Btdisplay.add_field ("Mana", "100/100") |>
     Btdisplay.add_field ("Health", "100/100") |>
-    flood_messages |>
+    flood_messages 10 |>
+    flood_messages 20 |>
     render_frame |>
     wait_for_escape render |>
     Btdisplay.quit;;

@@ -7,7 +7,7 @@ type bttextfield
 (* --- Basic default functions *)
 val create: int * int -> int * int -> btrender -> bttextfield
 val resize: int * int -> bttextfield -> bttextfield
-val set_render: Btrender.btrender -> bttextfield -> bttextfield
+val set_render: btrender -> bttextfield -> bttextfield
 val get_btrender: bttextfield -> btrender
 
 (* --- Textblock functions *)

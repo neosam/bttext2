@@ -133,4 +133,4 @@ let render textfield =
     let (x, y) = textfield.pos
     and (width, height) = textfield.size in
     let internal_height = min (List.length textfield.lines) height in
-    do_render y (y + height - 1) textfield
+    do_render y (y + internal_height - 1) textfield
