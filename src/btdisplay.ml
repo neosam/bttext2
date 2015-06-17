@@ -192,7 +192,10 @@ let render_content defaults display =
     render_text_and_map_decoration defaults
 
 let textfield_hull textfield_fn display =
-    set_textfield (textfield_fn display.textfield) display
+    set_textfield ((fun textfield -> textfield |>
+            Bttextfield.set_render display.render |>
+            textfield_fn)
+        display.textfield) display
 
 let render_frame display =
     let defaults = get_render_defaults display in
