@@ -202,8 +202,14 @@ let render_frame display =
     textfield_hull Bttextfield.render
 
 
-let add_message color text display =
-    textfield_hull (fun textfield -> textfield |>
-        Bttextfield.add_string color text |>
-        Bttextfield.add_newline
+
+let add_raw_message color text display =
+    textfield_hull (
+        Bttextfield.add_string color text
     ) display
+let add_message color text display =
+    add_raw_message color (text ^ " ") display
+let add_message_newline color text display =
+    display |>
+    add_raw_message color text |>
+    textfield_hull Bttextfield.add_newline
