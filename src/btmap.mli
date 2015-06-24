@@ -1,5 +1,6 @@
 open Btio
 open Btrender
+open Quadtree
 
 type btfield
 type btmap
@@ -20,8 +21,18 @@ val get_color: btfield -> Btio.color_pair
 
 (* --- Basic map functions *)
 (* let create_map (width, height) default_field *)
-val create_map: int * int -> btfield -> btmap
+val create_map:
+               int * int ->
+               int * int ->
+               btrender ->
+                 btmap
+
+val set_render: btrender -> btmap -> btmap
+val set_map: btfield Quadtree.map -> btmap -> btmap
 
 (* field at *)
 val field_at: int * int -> btmap -> btfield
 val set_field: int * int -> btfield -> btmap -> btmap
+
+(* Rendering *)
+val render: btmap -> btmap

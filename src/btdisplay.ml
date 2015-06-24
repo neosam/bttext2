@@ -1,6 +1,7 @@
 open Btrender
 open Btio
 open Bttextfield
+open Btmap
 
 type field = string * string
 
@@ -26,7 +27,10 @@ type btdisplay = {
     text_map_ratio: int * int;
 
     (** Text field *)
-    textfield: Bttextfield.bttextfield
+    textfield: Bttextfield.bttextfield;
+
+    (** Map area *)
+    map: Btmap.btmap
 }
 
 let calculate_separator_column_relative width (num, denom) =
@@ -51,6 +55,13 @@ let init_textfield render relation =
     and size = (separator - 3, height - 7) in
     Bttextfield.create pos size render
 
+let init_map render relation =
+    let (width, height) = Btrender.size render in
+    let separator = calculate_separator_column_relative width relation in
+    let pos = (separator + 2, 6)
+    and size = (width - separator - 3, height - 7) in
+    Btmap.create_map pos size render
+
 let init render_option =
     let relation = (3, 4) in
     let render = match render_option with
@@ -62,7 +73,8 @@ let init render_option =
       fields = [];
       status_size = 1;
       text_map_ratio = relation;
-      textfield = init_textfield render relation
+      textfield = init_textfield render relation;
+      map = init_map render relation
     }
 
 let quit display =
@@ -127,6 +139,8 @@ let set_textfield textfield display = {
     display with
     textfield = textfield
 }
+
+let set_map map display = { display with map = map }
 
 
 
@@ -197,12 +211,19 @@ let textfield_hull textfield_fn display =
             textfield_fn)
         display.textfield) display
 
+let map_hull map_fn display =
+    set_map ((fun map -> map |>
+            Btmap.set_render display.render |>
+            map_fn)
+        display.map) display
+
 let render_frame display =
     let defaults = get_render_defaults display in
     display |>
     render_outer_decoration defaults |>
     render_content defaults |>
-    textfield_hull Bttextfield.render
+    textfield_hull Bttextfield.render |>
+    map_hull Btmap.render
 
 
 
@@ -216,3 +237,8 @@ let add_message_newline color text display =
     display |>
     add_raw_message color text |>
     textfield_hull Bttextfield.add_newline
+
+let set_quadtree_map map display =
+    set_map (
+        Btmap.set_map map display.map
+    ) display
