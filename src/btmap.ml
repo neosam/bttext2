@@ -13,7 +13,7 @@ type 'a pair = 'a * 'a
 
 type btmap = {
     render: Btrender.btrender;
-    map: btfield Quadtree.map;
+    map: (btfield, unit) Quadtree.map;
     pos: int pair;
     size: int pair
 }
@@ -40,11 +40,11 @@ let create_map pos size render =
                                                  true
                                                  None) in {
     render = render;
-    map = Quadtree.create_node_map (1, 1) default_field;
+    map = Quadtree.create_node_map (1, 1) default_field ();
     pos = pos;
     size = size
 }
-let set_map (map: btfield Quadtree.map) (btmap: btmap) = { btmap with
+let set_map (map: (btfield, unit) Quadtree.map) (btmap: btmap) = { btmap with
     map = map
 }
 

@@ -35,4 +35,4 @@ val add_raw_message: Btio.color_pair -> string -> btdisplay -> btdisplay
 val add_message: Btio.color_pair -> string -> btdisplay -> btdisplay
 val add_message_newline: Btio.color_pair -> string -> btdisplay -> btdisplay
 
-val set_quadtree_map: Btmap.btfield map -> btdisplay -> btdisplay
+val set_quadtree_map: (Btmap.btfield, unit) map -> btdisplay -> btdisplay

@@ -32,7 +32,7 @@ let null_field = Btmap.create_field
                         None
 let persistence_map =
     Quadtree.create_persistence_map (1000, 1000)
-                                    default_field null_field
+                                    default_field null_field ()
                                     7 "testmap_"
 
 let main () =

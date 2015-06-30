@@ -28,7 +28,7 @@ val create_map:
                  btmap
 
 val set_render: btrender -> btmap -> btmap
-val set_map: btfield Quadtree.map -> btmap -> btmap
+val set_map: (btfield, unit) Quadtree.map -> btmap -> btmap
 
 (* field at *)
 val field_at: int * int -> btmap -> btfield
